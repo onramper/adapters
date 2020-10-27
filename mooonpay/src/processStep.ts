@@ -1,21 +1,17 @@
-import {
-  decodeToken,
-  checkTokenTypes,
-  checkBodyParams,
-} from './utils/token';
-import { StepError } from './errors';
+import { decodeToken, checkTokenTypes, checkBodyParams } from "./utils/token";
+import { StepError } from "./errors";
 import {
   registerEmail,
   verifyEmail,
   registerPhone,
   verifyPhone,
   registerIdentity,
-} from './KYC';
-import { nextStep } from './utils/lambda-response';
-import * as items from './KYC/items';
-import getNextKYCStepFromTxIdAndToken from './KYC/getNextKYCStepFromTxIdAndToken';
-import finishCCTransaction from './finishCCTransaction';
-import registerBank from './registerBank';
+} from "./KYC";
+import { nextStep } from "./utils/lambda-response";
+import * as items from "./KYC/items";
+import getNextKYCStepFromTxIdAndToken from "./KYC/getNextKYCStepFromTxIdAndToken";
+import finishCCTransaction from "./finishCCTransaction";
+import registerBank from "./registerBank";
 
 // Separated cause it's too bulky
 function processIdentityState(tokenValues: (string | number)[], body: any) {
@@ -33,9 +29,9 @@ function processIdentityState(tokenValues: (string | number)[], body: any) {
         string,
         string
       ]
-    >(tokenValues, ['', '', '', 0, 0, 0, '', '', '', ''])
+    >(tokenValues, ["", "", "", 0, 0, 0, "", "", "", ""])
   ) {
-    throw new StepError('URL is incorrect.', null);
+    throw new StepError("URL is incorrect.", null);
   }
   const [
     id,
@@ -51,7 +47,7 @@ function processIdentityState(tokenValues: (string | number)[], body: any) {
   ] = tokenValues;
   checkBodyParams(body, [items.stateItem]);
   const state = body[items.stateItem.name];
-  if (state === '') {
+  if (state === "") {
     throw new StepError(
       `Parameter ${items.stateItem.name} must not be empty.`,
       items.stateItem.name
@@ -80,19 +76,19 @@ export default function (
   try {
     tokenValues = decodeToken(token);
   } catch (e) {
-    throw new StepError('URL is incorrect.', null);
+    throw new StepError("URL is incorrect.", null);
   }
-  if (step === 'email') {
+  if (step === "email") {
     if (
       !checkTokenTypes<[string, number, string, string, string]>(tokenValues, [
-        '',
+        "",
         0,
-        '',
-        '',
-        '',
+        "",
+        "",
+        "",
       ])
     ) {
-      throw new StepError('URL is incorrect.', null);
+      throw new StepError("URL is incorrect.", null);
     }
     const [
       id,
@@ -113,9 +109,9 @@ export default function (
       country
     );
   }
-  if (step === 'verifyEmail') {
-    if (!checkTokenTypes<[string, string]>(tokenValues, ['', ''])) {
-      throw new StepError('URL is incorrect.', null);
+  if (step === "verifyEmail") {
+    if (!checkTokenTypes<[string, string]>(tokenValues, ["", ""])) {
+      throw new StepError("URL is incorrect.", null);
     }
     const [id, email] = tokenValues;
     checkBodyParams(body, [items.verifyEmailCodeItem]);
@@ -126,9 +122,9 @@ export default function (
       country
     );
   }
-  if (step === 'identity') {
-    if (!checkTokenTypes<[string]>(tokenValues, [''])) {
-      throw new StepError('URL is incorrect.', null);
+  if (step === "identity") {
+    if (!checkTokenTypes<[string]>(tokenValues, [""])) {
+      throw new StepError("URL is incorrect.", null);
     }
     const [id] = tokenValues;
     checkBodyParams(body, [
@@ -152,19 +148,19 @@ export default function (
       body[items.countryItem.name]
     );
   }
-  if (step === 'identityState') {
+  if (step === "identityState") {
     return processIdentityState(tokenValues, body);
   }
-  if (step === 'getNextKYCStep') {
-    if (!checkTokenTypes<[string, string]>(tokenValues, ['', ''])) {
-      throw new StepError('URL is incorrect.', null);
+  if (step === "getNextKYCStep") {
+    if (!checkTokenTypes<[string, string]>(tokenValues, ["", ""])) {
+      throw new StepError("URL is incorrect.", null);
     }
     const [id, csrfToken] = tokenValues;
     return getNextKYCStepFromTxIdAndToken(id, csrfToken);
   }
-  if (step === 'registerPhone') {
-    if (!checkTokenTypes<[string, string]>(tokenValues, ['', ''])) {
-      throw new StepError('URL is incorrect.', null);
+  if (step === "registerPhone") {
+    if (!checkTokenTypes<[string, string]>(tokenValues, ["", ""])) {
+      throw new StepError("URL is incorrect.", null);
     }
     const [id, csrfToken] = tokenValues;
     checkBodyParams(body, [items.phoneCountryCodeItem, items.phoneNumberItem]);
@@ -175,40 +171,40 @@ export default function (
       body[items.phoneNumberItem.name]
     );
   }
-  if (step === 'verifyPhone') {
-    if (!checkTokenTypes<[string, string]>(tokenValues, ['', ''])) {
-      throw new StepError('URL is incorrect.', null);
+  if (step === "verifyPhone") {
+    if (!checkTokenTypes<[string, string]>(tokenValues, ["", ""])) {
+      throw new StepError("URL is incorrect.", null);
     }
     const [id, csrfToken] = tokenValues;
     checkBodyParams(body, [items.verifyPhoneCodeItem]);
     return verifyPhone(id, csrfToken, body[items.verifyPhoneCodeItem.name]);
   }
-  if (step === 'registerBank') {
-    if (!checkTokenTypes<[string, string, string]>(tokenValues, ['', '', ''])) {
-      throw new StepError('URL is incorrect.', null);
+  if (step === "registerBank") {
+    if (!checkTokenTypes<[string, string, string]>(tokenValues, ["", "", ""])) {
+      throw new StepError("URL is incorrect.", null);
     }
     const [id, csrfToken, fiatCurrency] = tokenValues;
-    if (fiatCurrency === 'EUR') {
+    if (fiatCurrency === "EUR") {
       checkBodyParams(body, [items.bankIbanItem]);
       return registerBank(id, csrfToken, {
-        currencyCode: 'eur',
+        currencyCode: "eur",
         iban: body[items.bankIbanItem.name],
       });
     }
-    if (fiatCurrency === 'GBP') {
+    if (fiatCurrency === "GBP") {
       checkBodyParams(body, [
         items.bankSortCodeItem,
         items.bankAccountNumberItem,
       ]);
       return registerBank(id, csrfToken, {
-        currencyCode: 'gbp',
+        currencyCode: "gbp",
         accountNumber: body[items.bankAccountNumberItem.name],
         sortCode: body[items.bankSortCodeItem.name],
       });
     }
-    throw new StepError('URL is incorrect, unaccepted fiat currency.', null);
+    throw new StepError("URL is incorrect, unaccepted fiat currency.", null);
   }
-  if (step === 'registerCreditCardToken') {
+  if (step === "registerCreditCardToken") {
     checkBodyParams(body, [items.transactionId, items.creditCardTokenId]);
     return finishCCTransaction(
       body[items.transactionId.name],

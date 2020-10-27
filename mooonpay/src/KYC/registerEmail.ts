@@ -1,11 +1,16 @@
-import { moonpayBaseAPI, identifier, publishableApiKey, baseAPIUrl } from '../constants';
-import { nextStep } from '../utils/lambda-response';
-import fetch from '../utils/fetch';
-import { StepError } from '../errors';
-import { encodeToken } from '../utils/token';
-import { createCreationTx } from './dynamoTxs';
-import * as items from './items';
-import validateAddress from '../utils/validateAddress';
+import {
+  moonpayBaseAPI,
+  identifier,
+  publishableApiKey,
+  baseAPIUrl,
+} from "../constants";
+import { nextStep } from "../utils/lambda-response";
+import fetch from "../utils/fetch";
+import { StepError } from "../errors";
+import { encodeToken } from "../utils/token";
+import { createCreationTx } from "./dynamoTxs";
+import * as items from "./items";
+import validateAddress from "../utils/validateAddress";
 
 interface EmailLoginResponse {
   preAuthenticated: boolean;
@@ -25,7 +30,7 @@ export default async function (
   // TODO: Validate all new transaction data
   if (validateAddress(cryptocurrencyAddress, cryptoCurrency) === false) {
     throw new StepError(
-      'The provided cryptocurrency address is not valid.',
+      "The provided cryptocurrency address is not valid.",
       items.cryptocurrencyAddress.name
     );
   }
@@ -33,11 +38,11 @@ export default async function (
     const res = (await fetch(
       `${moonpayBaseAPI}/customers/email_login?apiKey=${publishableApiKey}`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify({
           email,
         }),
@@ -48,7 +53,7 @@ export default async function (
     }
   } catch (e) {
     throw new StepError(
-      'The provided email has been rejected.',
+      "The provided email has been rejected.",
       items.emailItem.name
     );
   }
@@ -61,38 +66,38 @@ export default async function (
     fiatAmount: amount,
     paymentMethod,
     cryptocurrencyAddress,
-    country
+    country,
   });
   const termsOfUse: items.stepItem = {
-    type: 'boolean',
-    name: 'termsOfUse',
+    type: "boolean",
+    name: "termsOfUse",
     terms: [
       {
-        url: 'https://onramper.com/terms-of-use/',
+        url: "https://onramper.com/terms-of-use/",
         humanName: "Onramper's Terms Of Use",
       },
       {
-        url: 'https://onramper.com/privacy-policy/',
+        url: "https://onramper.com/privacy-policy/",
         humanName: "Onramper's Privacy Policy",
       },
       {
-        url: 'https://moonpay.io/terms_of_use/',
+        url: "https://moonpay.io/terms_of_use/",
         humanName: "Moonpay's Terms Of Use",
       },
       {
-        url: 'https://moonpay.io/privacy_policy/',
+        url: "https://moonpay.io/privacy_policy/",
         humanName: "Moonpay's Privacy Policy",
       },
     ],
   };
-  if (country === 'us') {
+  if (country === "us") {
     termsOfUse.terms.push({
-      url: 'https://buy.moonpay.io/ZeroHashLLCServicesAgreement.pdf',
-      humanName: 'Zero Hash LLC Services Agreement',
+      url: "https://buy.moonpay.io/ZeroHashLLCServicesAgreement.pdf",
+      humanName: "Zero Hash LLC Services Agreement",
     });
   }
   return {
-    type: 'form',
+    type: "form",
     url: `${baseAPIUrl}/transaction/${identifier}/verifyEmail/${encodeToken([
       id,
       email,

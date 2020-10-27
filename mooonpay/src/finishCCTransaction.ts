@@ -1,9 +1,9 @@
-import { moonpayBaseAPI, baseCreditCardSandboxUrl } from './constants';
-import { nextStep } from './utils/lambda-response';
-import fetch from './utils/fetch';
-import ddb from './utils/dynamodb';
-import { getCreationTx, getTxAuthToken } from './KYC/dynamoTxs';
-import { StepError, FetchError } from './errors';
+import { moonpayBaseAPI, baseCreditCardSandboxUrl } from "./constants";
+import { nextStep } from "./utils/lambda-response";
+import fetch from "./utils/fetch";
+import ddb from "./utils/dynamodb";
+import { getCreationTx, getTxAuthToken } from "./KYC/dynamoTxs";
+import { StepError, FetchError } from "./errors";
 
 interface TransactionResponse {
   id: string;
@@ -14,7 +14,7 @@ interface TransactionResponse {
   feeAmount: number;
   extraFeeAmount: number;
   areFeesIncluded: boolean;
-  status: 'pending' | 'waitingAuthorization';
+  status: "pending" | "waitingAuthorization";
   failureReason: null;
   walletAddress: string;
   walletAddressTag: null;
@@ -42,12 +42,12 @@ export default async function (
     const authTx = getTxAuthToken(txId);
     const creationTx = await getCreationTx(txId);
     const moonpayTx = (await fetch(`${moonpayBaseAPI}/transactions`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': (await authTx).csrfToken,
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": (await authTx).csrfToken,
       },
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify({
         baseCurrencyAmount: creationTx.fiatAmount,
         extraFeePercentage: 0, // TODO
@@ -65,21 +65,21 @@ export default async function (
       Timestamp: Date.now(),
       status: moonpayTx.status,
     });
-    if (moonpayTx.status === 'waitingAuthorization') {
+    if (moonpayTx.status === "waitingAuthorization") {
       return {
-        type: 'redirect',
+        type: "redirect",
         url: moonpayTx.redirectUrl!,
       };
     }
     return {
-      type: 'completed',
+      type: "completed",
     };
   } catch (e) {
     if (e instanceof FetchError) {
       let errorMessage = e.errorObject.message;
-      if (errorMessage === 'Wallet address does not match regex') {
+      if (errorMessage === "Wallet address does not match regex") {
         errorMessage =
-          'Wallet address does not match regex. Note that if you are using a test API Key only testnet addresses are allowed';
+          "Wallet address does not match regex. Note that if you are using a test API Key only testnet addresses are allowed";
       }
       throw new StepError(`Transaction failed: ${errorMessage}.`, null);
     } else if (e instanceof StepError) {

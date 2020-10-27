@@ -1,9 +1,9 @@
-import { nextStep } from '../utils/lambda-response';
-import { moonpayBaseAPI } from '../constants';
-import { StepError } from '../errors';
-import fetch from '../utils/fetch';
-import { verifyPhoneCodeItem } from './items';
-import getNextKYCStepFromTxIdAndToken from './getNextKYCStepFromTxIdAndToken';
+import { nextStep } from "../utils/lambda-response";
+import { moonpayBaseAPI } from "../constants";
+import { StepError } from "../errors";
+import fetch from "../utils/fetch";
+import { verifyPhoneCodeItem } from "./items";
+import getNextKYCStepFromTxIdAndToken from "./getNextKYCStepFromTxIdAndToken";
 
 export default async function (
   id: string,
@@ -14,12 +14,12 @@ export default async function (
     const response = await fetch(
       `${moonpayBaseAPI}/customers/verify_phone_number`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': token,
+          "Content-Type": "application/json",
+          "X-CSRF-TOKEN": token,
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify({
           verificationCode: phoneCode,
         }),
@@ -30,7 +30,7 @@ export default async function (
     }
   } catch (e) {
     throw new StepError(
-      'The provided phone code has been rejected.',
+      "The provided phone code has been rejected.",
       verifyPhoneCodeItem.name
     );
   }

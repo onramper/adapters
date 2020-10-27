@@ -1,9 +1,9 @@
-import { moonpayBaseAPI, identifier, baseAPIUrl } from '../constants';
-import { nextStep } from '../utils/lambda-response';
-import { StepError } from '../errors';
-import { encodeToken } from '../utils/token';
-import fetch from '../utils/fetch';
-import * as items from './items';
+import { moonpayBaseAPI, identifier, baseAPIUrl } from "../constants";
+import { nextStep } from "../utils/lambda-response";
+import { StepError } from "../errors";
+import { encodeToken } from "../utils/token";
+import fetch from "../utils/fetch";
+import * as items from "./items";
 
 export default async function (
   id: string,
@@ -13,24 +13,24 @@ export default async function (
 ): Promise<nextStep> {
   try {
     await fetch(`${moonpayBaseAPI}/customers/me`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': token,
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": token,
       },
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify({
         phoneNumber: `+${phoneCountryCode}${phoneNumber}`,
       }),
     }).then((r) => r.json());
   } catch (e) {
     throw new StepError(
-      'The provided phone number has not been accepted.',
+      "The provided phone number has not been accepted.",
       items.phoneNumberItem.name
     );
   }
   return {
-    type: 'form',
+    type: "form",
     url: `${baseAPIUrl}/transaction/${identifier}/verifyPhone/${encodeToken([
       id,
       token,

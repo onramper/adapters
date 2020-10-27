@@ -1,23 +1,24 @@
-import finishCCTransaction from './finishCCTransaction';
+import finishCCTransaction from "./finishCCTransaction";
+import { simulateSingleFetchFailure, setFetchReturn } from "./utils/fetch";
 import {
-  simulateSingleFetchFailure,
-  setFetchReturn,
-} from './utils/fetch';
-import { createAllMockTxs, createMockTxAuthToken } from './KYC/mockTransactions';
-jest.mock('./utils/fetch');
+  createAllMockTxs,
+  createMockTxAuthToken,
+} from "./KYC/mockTransactions";
 
-beforeEach(()=>{
+jest.mock("./utils/fetch");
+
+beforeEach(() => {
   localStorage.clear();
-})
+});
 
-test('Address error is properly propagated', async () => {
+test("Address error is properly propagated", async () => {
   simulateSingleFetchFailure(
     null,
     '{"errors":[],"message":"Wallet address does not match regex","type":"BadRequestError"}'
   );
-  await createAllMockTxs('123');
+  await createAllMockTxs("123");
   return expect(
-    finishCCTransaction('123', 'mock-cc-token')
+    finishCCTransaction("123", "mock-cc-token")
   ).rejects.toMatchInlineSnapshot(
     `[StepError: Transaction failed: Wallet address does not match regex. Note that if you are using a test API Key only testnet addresses are allowed.]`
   );
@@ -26,16 +27,16 @@ test('Address error is properly propagated', async () => {
 test("Returns descriptive error when transaction doesn't exist", async () => {
   await createMockTxAuthToken({});
   return expect(
-    finishCCTransaction('123', 'mock-cc-token')
+    finishCCTransaction("123", "mock-cc-token")
   ).rejects.toMatchInlineSnapshot(
     `[StepError: The transaction that you are attempting to continue has not been created.]`
   );
 });
 
-test('If 3D secure is not required the response marks the transaction as completed', async () => {
-  await createAllMockTxs('123');
+test("If 3D secure is not required the response marks the transaction as completed", async () => {
+  await createAllMockTxs("123");
   setFetchReturn('{"status": "completed"}');
-  expect(await finishCCTransaction('123', 'mock-cc-token'))
+  expect(await finishCCTransaction("123", "mock-cc-token"))
     .toMatchInlineSnapshot(`
     Object {
       "type": "completed",
@@ -43,10 +44,10 @@ test('If 3D secure is not required the response marks the transaction as complet
   `);
 });
 
-test('If 3D secure is required we respond with a redirect', async () => {
-  await createAllMockTxs('123');
-  const res = await finishCCTransaction('123', 'mock-cc-token');
-  expect(res.type).toBe('redirect');
+test("If 3D secure is required we respond with a redirect", async () => {
+  await createAllMockTxs("123");
+  const res = await finishCCTransaction("123", "mock-cc-token");
+  expect(res.type).toBe("redirect");
   expect(res).toMatchInlineSnapshot(`
       Object {
         "type": "redirect",

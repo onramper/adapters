@@ -3,22 +3,23 @@ import {
   identifier,
   acceptedContentTypes,
   baseCreditCardSandboxUrl,
-  baseAPIUrl, baseUploadsUrl
-} from '../constants';
-import { encodeToken, encodeJson } from '../utils/token';
-import { StepError, InternalError } from '../errors';
-import { nextStep, stepDataItems } from '../utils/lambda-response';
-import { requiredDocumentsAlpha3 } from '../moonpayCountryData';
-import fetch from '../utils/fetch';
-import getDocumentHumanName from '../documents/getDocumentHumanName';
-import { creationTxType } from './dynamoTxs';
-import { limitAPIResponse, customerAPIResponse } from './api';
-import * as items from './items';
+  baseAPIUrl,
+  baseUploadsUrl,
+} from "../constants";
+import { encodeToken, encodeJson } from "../utils/token";
+import { StepError, InternalError } from "../errors";
+import { nextStep, stepDataItems } from "../utils/lambda-response";
+import { requiredDocumentsAlpha3 } from "../moonpayCountryData";
+import fetch from "../utils/fetch";
+import getDocumentHumanName from "../documents/getDocumentHumanName";
+import { creationTxType } from "./dynamoTxs";
+import { limitAPIResponse, customerAPIResponse } from "./api";
+import * as items from "./items";
 
 function selectLimit(
   limits: limitAPIResponse,
   txType: string
-): limitAPIResponse['limits'][0] {
+): limitAPIResponse["limits"][0] {
   return limits.limits.filter((l) => l.type === txType)[0];
 }
 
@@ -40,35 +41,35 @@ export default async function (
   // Essentially only the first call to the /limits endpoint is needed
   const limits = (await fetch(`${moonpayBaseAPI}/customers/me/limits`, {
     headers: {
-      'X-CSRF-TOKEN':token,
+      "X-CSRF-TOKEN": token,
     },
-    credentials: 'include',
+    credentials: "include",
   }).then((res) => res.json())) as limitAPIResponse;
   let txType: string;
-  if (creationTx.paymentMethod === 'creditCard') {
-    txType = 'buy_credit_debit_card';
-  } else if (creationTx.paymentMethod === 'bankTransfer') {
-    if (creationTx.fiatCurrency === 'EUR') {
-      txType = 'buy_sepa_bank_transfer';
-    } else if (creationTx.fiatCurrency === 'GBP') {
-      txType = 'buy_gbp_bank_transfer';
+  if (creationTx.paymentMethod === "creditCard") {
+    txType = "buy_credit_debit_card";
+  } else if (creationTx.paymentMethod === "bankTransfer") {
+    if (creationTx.fiatCurrency === "EUR") {
+      txType = "buy_sepa_bank_transfer";
+    } else if (creationTx.fiatCurrency === "GBP") {
+      txType = "buy_gbp_bank_transfer";
     } else {
       throw new InternalError(
-        'No currency other than EUR and GBP is allowed to make bank transfers.'
+        "No currency other than EUR and GBP is allowed to make bank transfers."
       );
     }
   } else {
-    throw new InternalError('Payment method not accepted.');
+    throw new InternalError("Payment method not accepted.");
   }
-  const txId = creationTx.PK.split('#')[1];
+  const txId = creationTx.PK.split("#")[1];
   const currentLimit = Math.min(
     selectLimit(limits, txType).dailyLimitRemaining,
     selectLimit(limits, txType).monthlyLimitRemaining
   );
   if (creationTx.fiatAmount <= currentLimit) {
-    if (creationTx.paymentMethod === 'creditCard') {
+    if (creationTx.paymentMethod === "creditCard") {
       return {
-        type: 'iframe',
+        type: "iframe",
         url: `${baseCreditCardSandboxUrl}?customerId=${
           customerData.id
         }&customerAddress=${encodeJson(
@@ -79,13 +80,13 @@ export default async function (
     // Request bank data
     const fiatCurrency = creationTx.fiatCurrency;
     let requiredData: stepDataItems;
-    if (fiatCurrency === 'EUR') {
+    if (fiatCurrency === "EUR") {
       requiredData = [items.bankIbanItem];
     } else {
       requiredData = [items.bankSortCodeItem, items.bankAccountNumberItem];
     }
     return {
-      type: 'form',
+      type: "form",
       url: `${baseAPIUrl}/transaction/${identifier}/registerBank/${encodeToken([
         txId,
         token,
@@ -106,11 +107,11 @@ export default async function (
     const nextKYCLevel = missingKYC[0].requirements.filter(
       (req) => req.completed === false
     )[0].identifier;
-    if (nextKYCLevel === 'phone_number_verification') {
+    if (nextKYCLevel === "phone_number_verification") {
       if (customerData.phoneNumber === null) {
         // Get phone
         return {
-          type: 'form',
+          type: "form",
           url: `${baseAPIUrl}/transaction/${identifier}/registerPhone/${encodeToken(
             [txId, token]
           )}`,
@@ -119,19 +120,19 @@ export default async function (
       }
       // Verify phone
       return {
-        type: 'form',
+        type: "form",
         url: `${baseAPIUrl}/transaction/${identifier}/verifyPhone/${encodeToken(
           [txId, token]
         )}`,
         data: [items.verifyPhoneCodeItem],
       };
     }
-    if (nextKYCLevel === 'document_verification') {
+    if (nextKYCLevel === "document_verification") {
       const alpha3Country = getAlpha3Country(customerData.address.country);
       const possibleDocuments = requiredDocumentsAlpha3[alpha3Country];
 
       return {
-        type: 'pickOne',
+        type: "pickOne",
         options: possibleDocuments.map((docId) => {
           let humanName: string;
           try {
@@ -140,7 +141,7 @@ export default async function (
             throw new InternalError(e);
           }
           return {
-            type: 'file',
+            type: "file",
             humanName,
             url: `${baseUploadsUrl}/${identifier}/${docId}/${txId}/${alpha3Country}/${token}/front`,
             acceptedContentTypes,
@@ -148,33 +149,33 @@ export default async function (
         }),
       };
     }
-    if (nextKYCLevel === 'face_match_verification') {
+    if (nextKYCLevel === "face_match_verification") {
       const alpha3Country = getAlpha3Country(customerData.address.country);
       return {
-        type: 'file',
-        humanName: 'Selfie',
+        type: "file",
+        humanName: "Selfie",
         url: `${baseUploadsUrl}/${identifier}/selfie/${txId}/${alpha3Country}/${token}/front`,
         acceptedContentTypes,
       };
     }
-    if (nextKYCLevel === 'address_verification') {
+    if (nextKYCLevel === "address_verification") {
       const alpha3Country = getAlpha3Country(customerData.address.country);
       return {
-        type: 'file',
-        humanName: 'Proof of Address',
+        type: "file",
+        humanName: "Proof of Address",
         hint:
-          'Original, unedited photo or PDF of a bank statement, utility bill, tax return or council tax bill.',
+          "Original, unedited photo or PDF of a bank statement, utility bill, tax return or council tax bill.",
         url: `${baseUploadsUrl}/${identifier}/proof_of_address/${txId}/${alpha3Country}/${token}/front`,
         acceptedContentTypes,
       };
     }
-    if (nextKYCLevel === 'identity_verification') {
+    if (nextKYCLevel === "identity_verification") {
       throw new InternalError(
-        'It is impossible to reach this point without finishing identity verification.'
+        "It is impossible to reach this point without finishing identity verification."
       );
     } else {
       throw new StepError(
-        'Required KYC level is not supported by Onramper.',
+        "Required KYC level is not supported by Onramper.",
         null
       );
     }

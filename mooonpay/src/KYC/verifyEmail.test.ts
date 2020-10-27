@@ -1,6 +1,7 @@
 import verifyEmail from "./verifyEmail";
 import { setFetchReturn } from "../utils/fetch";
 import { getTxAuthToken } from "./dynamoTxs";
+
 jest.mock("../utils/fetch");
 
 test("verifyEmail stores the right token", async () => {
@@ -14,5 +15,7 @@ test("verifyEmail stores the right token", async () => {
     ])
   );
   await verifyEmail("123", "a@b.c", "1234", "es");
-  expect((await getTxAuthToken("123")).csrfToken).toBe("PFIAFM5YLznimwLCHYhglcotrwcVlv")
+  expect((await getTxAuthToken("123")).csrfToken).toBe(
+    "PFIAFM5YLznimwLCHYhglcotrwcVlv"
+  );
 });

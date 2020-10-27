@@ -5,9 +5,9 @@ export default class StepError extends Error {
     // Pass remaining arguments (including vendor specific ones) to parent constructor
     super(message);
 
-    if (typeof field === 'string') {
+    if (typeof field === "string") {
       this.field = field;
     }
-    this.name = 'StepError';
+    this.name = "StepError";
   }
 }

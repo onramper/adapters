@@ -1,14 +1,3 @@
-interface IJSON {
-  [key: string]: any;
-}
-
-interface IResponseOptions {
-  body: IJSON;
-  statusCode: number;
-  allowCORS?: boolean;
-  cacheTTL?: number;
-}
-
 export type dateInfo = {
   year: number;
   month: number;
@@ -17,39 +6,39 @@ export type dateInfo = {
 
 export type stepDataItems = Array<
   | {
-      type: 'string' | 'integer';
+      type: "string" | "integer";
       humanName: string;
       name: string;
       hint?: string;
       required?: boolean;
     }
   | {
-      type: 'date';
+      type: "date";
       name: string;
       humanName: string;
       hint?: string;
       required?: boolean;
       data: [
         {
-          type: 'integer';
-          humanName: 'Day';
-          name: 'day';
+          type: "integer";
+          humanName: "Day";
+          name: "day";
         },
         {
-          type: 'integer';
-          humanName: 'Month';
-          name: 'month';
+          type: "integer";
+          humanName: "Month";
+          name: "month";
         },
         {
-          type: 'integer';
-          humanName: 'Year';
-          name: 'year';
+          type: "integer";
+          humanName: "Year";
+          name: "year";
         }
       ];
     }
   | {
-      type: 'boolean';
-      name: 'termsOfUse';
+      type: "boolean";
+      name: "termsOfUse";
       terms: {
         url: string;
         humanName: string;
@@ -58,7 +47,7 @@ export type stepDataItems = Array<
 >;
 
 interface FileStep {
-  type: 'file';
+  type: "file";
   humanName: string;
   hint?: string;
   url: string;
@@ -67,18 +56,18 @@ interface FileStep {
 
 export type nextStep =
   | {
-      type: 'iframe' | 'redirect' | 'form';
+      type: "iframe" | "redirect" | "form";
       url: string;
       data?: stepDataItems;
     }
   | FileStep
   | {
-      type: 'pickOne';
+      type: "pickOne";
       options: FileStep[];
     }
-  | { type: 'completed' }
+  | { type: "completed" }
   | {
-      type: 'requestBankTransaction';
+      type: "requestBankTransaction";
       depositBankAccount: {
         iban: string;
         bic: string;

@@ -1,11 +1,11 @@
-import normalizeDocuments from './normalizeDocuments';
+import normalizeDocuments from "./normalizeDocuments";
 
-test('normalizeDocuments', () => {
+test("normalizeDocuments", () => {
   expect(
     normalizeDocuments([
-      'passport',
-      'driving_licence',
-      'national_identity_card',
+      "passport",
+      "driving_licence",
+      "national_identity_card",
     ])
-  ).toEqual(['passport', 'driverLicense', 'nationalIdentityCard']);
+  ).toEqual(["passport", "driverLicense", "nationalIdentityCard"]);
 });

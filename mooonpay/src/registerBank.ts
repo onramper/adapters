@@ -1,9 +1,9 @@
-import { moonpayBaseAPI } from './constants';
-import { nextStep } from './utils/lambda-response';
-import fetch from './utils/fetch';
-import ddb from './utils/dynamodb';
-import { getCreationTx } from './KYC/dynamoTxs';
-import { StepError } from './errors';
+import { moonpayBaseAPI } from "./constants";
+import { nextStep } from "./utils/lambda-response";
+import fetch from "./utils/fetch";
+import ddb from "./utils/dynamodb";
+import { getCreationTx } from "./KYC/dynamoTxs";
+import { StepError } from "./errors";
 
 interface CreateBankResponse {
   id: string;
@@ -27,7 +27,7 @@ interface CreateBankTransactionResponse {
   feeAmount: number;
   extraFeeAmount: number;
   areFeesIncluded: boolean;
-  status: 'waitingPayment';
+  status: "waitingPayment";
   failureReason: null;
   walletAddress: string;
   walletAddressTag: null;
@@ -59,33 +59,33 @@ export default async function (
   csrfToken: string,
   bankInfo:
     | {
-        currencyCode: 'eur';
+        currencyCode: "eur";
         iban: string;
       }
     | {
-        currencyCode: 'gbp';
+        currencyCode: "gbp";
         accountNumber: string;
         sortCode: string;
       }
 ): Promise<nextStep> {
   try {
     const bankResponse = (await fetch(`${moonpayBaseAPI}/bank_accounts`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrfToken,
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": csrfToken,
       },
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify(bankInfo),
     }).then((res) => res.json())) as CreateBankResponse;
     const creationTx = await getCreationTx(txId);
     const txCreationResponse = (await fetch(`${moonpayBaseAPI}/transactions`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrfToken,
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": csrfToken,
       },
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify({
         baseCurrencyAmount: creationTx.fiatAmount,
         extraFeePercentage: 0, // TODO
@@ -103,12 +103,12 @@ export default async function (
       status: txCreationResponse.status,
     });
     return {
-      type: 'requestBankTransaction',
+      type: "requestBankTransaction",
       depositBankAccount: txCreationResponse.bankDepositInformation,
       reference: txCreationResponse.bankTransferReference,
       hint: `Transfer ${creationTx.fiatAmount} ${bankInfo.currencyCode} into the bank account provided to complete the transaction. Your transaction must cite the reference '${txCreationResponse.bankTransferReference}' to be valid.`,
     };
   } catch (e) {
-    throw new StepError('Bank or currency not supported by Moonpay.', null);
+    throw new StepError("Bank or currency not supported by Moonpay.", null);
   }
 }

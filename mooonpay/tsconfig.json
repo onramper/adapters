@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "skipLibCheck": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noEmit": false,
+    "outDir": "build",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "lib":["ES2018",
+      "dom"]
+  },
+  "include": ["src"]
+}

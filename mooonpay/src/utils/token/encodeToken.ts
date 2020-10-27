@@ -10,7 +10,7 @@ export function replaceAll(
 // See https://tools.ietf.org/html/rfc4648#section-5
 // This encoding is accepted by Buffer.from(buf, 'base64')
 export function safeEncode(buf: Buffer) {
-  return replaceAll(replaceAll(buf.toString('base64'), '/', '_'), '+', '-');
+  return replaceAll(replaceAll(buf.toString("base64"), "/", "_"), "+", "-");
 }
 
 export type decodedTokenType = Array<number | string>;

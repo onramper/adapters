@@ -1,6 +1,6 @@
-import { getCreationTx } from './dynamoTxs';
-import { setFiatCurrency } from './api';
-import getNextKYCStep from './getNextKYCStep';
+import { getCreationTx } from "./dynamoTxs";
+import { setFiatCurrency } from "./api";
+import getNextKYCStep from "./getNextKYCStep";
 
 export default async function (
   id: string,

@@ -1,10 +1,6 @@
-import StepError from '../../errors/StepError';
-import { stepDataItems } from '../lambda-response';
-import {
-  encodeToken,
-  safeEncode,
-  decodedTokenType
-} from './encodeToken';
+import StepError from "../../errors/StepError";
+import { stepDataItems } from "../lambda-response";
+import { encodeToken, safeEncode, decodedTokenType } from "./encodeToken";
 
 export { encodeToken };
 
@@ -17,7 +13,7 @@ export function randomId(): string {
 }
 
 export function decodeToken(token: string): decodedTokenType {
-  return JSON.parse(Buffer.from(token, 'base64').toString());
+  return JSON.parse(Buffer.from(token, "base64").toString());
 }
 
 export function checkTokenTypes<expectedTypes extends decodedTokenType>(
@@ -33,7 +29,7 @@ export function checkTokenTypes<expectedTypes extends decodedTokenType>(
 }
 
 function checkInteger(num: any, errorMessage: string, fieldName: string) {
-  if (typeof num !== 'number') {
+  if (typeof num !== "number") {
     throw new StepError(`${errorMessage} is not a number.`, fieldName);
   }
   if (num % 1 !== 0) {
@@ -51,29 +47,29 @@ export function checkBodyParams(body: any, keys: stepDataItems) {
         bodyKeyName
       );
     }
-    if (bodyKey.type === 'date') {
+    if (bodyKey.type === "date") {
       const errorMessage = `Parameter '${bodyKeyName}' is a date, so it should be an object with integer number properties 'day', 'month' and 'year'. However,`;
-      if (typeof bodyValue !== 'object') {
+      if (typeof bodyValue !== "object") {
         throw new StepError(
           `${errorMessage} '${bodyKeyName}' is not an object.`,
           bodyKeyName
         );
       }
-      ['day', 'month', 'year'].forEach((dateKey) =>
+      ["day", "month", "year"].forEach((dateKey) =>
         checkInteger(
           bodyValue[dateKey],
           `${errorMessage} property '${dateKey}'`,
           bodyKeyName
         )
       );
-    } else if (bodyKey.type === 'string') {
-      if (typeof bodyValue !== 'string') {
+    } else if (bodyKey.type === "string") {
+      if (typeof bodyValue !== "string") {
         throw new StepError(
           `Parameter '${bodyKeyName}' found on json body is not a string.`,
           bodyKeyName
         );
       }
-    } else if (bodyKey.type === 'integer') {
+    } else if (bodyKey.type === "integer") {
       checkInteger(
         bodyValue,
         `Parameter '${bodyKeyName}' found on json body`,

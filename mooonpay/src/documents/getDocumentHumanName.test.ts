@@ -1,5 +1,5 @@
-import getDocumentHumanName from './getDocumentHumanName';
+import getDocumentHumanName from "./getDocumentHumanName";
 
-test('getDocumentHumanName', () => {
-  expect(getDocumentHumanName('driving_licence')).toBe("Driver's License");
+test("getDocumentHumanName", () => {
+  expect(getDocumentHumanName("driving_licence")).toBe("Driver's License");
 });

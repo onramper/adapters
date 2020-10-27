@@ -1,5 +1,6 @@
 import getNextKYCStep from "./getNextKYCStep";
 import { setFetchReturn } from "../utils/fetch";
+
 jest.mock("../utils/fetch");
 
 const limitAPISampleResponse =

@@ -1,6 +1,7 @@
 import registerEmail from "./registerEmail";
 import { simulateSingleFetchFailure } from "../utils/fetch";
 import ddb from "../utils/dynamodb";
+
 jest.mock("../utils/fetch");
 
 function call(

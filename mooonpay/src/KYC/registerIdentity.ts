@@ -1,23 +1,23 @@
-import { moonpayBaseAPI, identifier, baseAPIUrl } from '../constants';
-import { nextStep, dateInfo } from '../utils/lambda-response';
-import ddb from '../utils/dynamodb';
-import { encodeToken } from '../utils/token';
-import { identityTX, getCreationTx, getTxAuthToken } from './dynamoTxs';
-import countryAlpha2To3 from '../utils/isoAlpha2ToAlpha3';
-import { customerIdentityData, customerAPIResponse } from './api';
+import { moonpayBaseAPI, identifier, baseAPIUrl } from "../constants";
+import { nextStep, dateInfo } from "../utils/lambda-response";
+import ddb from "../utils/dynamodb";
+import { encodeToken } from "../utils/token";
+import { identityTX, getCreationTx, getTxAuthToken } from "./dynamoTxs";
+import countryAlpha2To3 from "../utils/isoAlpha2ToAlpha3";
+import { customerIdentityData, customerAPIResponse } from "./api";
 import {
   fiatData,
   unsupportedUSAStates,
   USAStates,
   USsupportedCrypto,
-} from '../moonpayCountryData';
-import getNextKYCStep from './getNextKYCStep';
-import fetch from '../utils/fetch';
-import { stateItem, countryItem } from './items';
-import { StepError, FetchError } from '../errors';
+} from "../moonpayCountryData";
+import getNextKYCStep from "./getNextKYCStep";
+import fetch from "../utils/fetch";
+import { stateItem, countryItem } from "./items";
+import { StepError, FetchError } from "../errors";
 
 export function generateDate({ year, month, day }: dateInfo): string {
-  const pad = (strN: number, n: number) => String(strN).padStart(n, '0');
+  const pad = (strN: number, n: number) => String(strN).padStart(n, "0");
   return `${pad(year, 4)}-${pad(month, 2)}-${pad(day, 2)}T00:00:00.000Z`;
 }
 
@@ -49,14 +49,14 @@ export default async function (
     },
     defaultCurrencyId: fiatData[(await creationTx).fiatCurrency].id,
   };
-  if (country === 'USA') {
+  if (country === "USA") {
     if (
       state === undefined ||
-      typeof state !== 'string' ||
+      typeof state !== "string" ||
       state.length === 0
     ) {
       return {
-        type: 'form',
+        type: "form",
         url: `${baseAPIUrl}/transaction/${identifier}/identityState/${encodeToken(
           [
             id,
@@ -83,7 +83,7 @@ export default async function (
     }
     if (unsupportedUSAStates.includes(processedState)) {
       throw new StepError(
-        'This state is not supported by Moonpay.',
+        "This state is not supported by Moonpay.",
         stateItem.name
       );
     }
@@ -107,12 +107,12 @@ export default async function (
   } as identityTX);
   try {
     const updatedCustomerData = (await fetch(`${moonpayBaseAPI}/customers/me`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': (await tokenTx).csrfToken,
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": (await tokenTx).csrfToken,
       },
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify(customerData),
     }).then((res) => res.json())) as customerAPIResponse;
     return getNextKYCStep(
@@ -131,7 +131,7 @@ export default async function (
           error = error.children[0];
         }
         throw new StepError(
-          Object.values(error.constraints).join(', '),
+          Object.values(error.constraints).join(", "),
           error.property
         );
       } else {

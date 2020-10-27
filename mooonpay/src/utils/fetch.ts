@@ -1,4 +1,4 @@
-import FetchError from '../errors/FetchError';
+import FetchError from "../errors/FetchError";
 
 export default function (
   url: RequestInfo,
@@ -13,8 +13,8 @@ export default function (
   });
 }
 
-export function setFetchReturn(data: string, headers?: Map<string, string>){}
+export function setFetchReturn(_data: string, _headers?: Map<string, string>) {}
 export function simulateSingleFetchFailure(
-  url: string | null = null,
-  response?: string
+  _url: string | null = null,
+  _response?: string
 ) {}

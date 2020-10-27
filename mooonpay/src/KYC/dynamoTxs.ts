@@ -1,5 +1,5 @@
-import ddb from '../utils/dynamodb';
-import { StepError } from '../errors';
+import ddb from "../utils/dynamodb";
+import { StepError } from "../errors";
 
 export interface creationTxType {
   PK: string;
@@ -34,12 +34,12 @@ export function createCreationTx(tx: creationTxType) {
 
 export async function getCreationTx(id: string): Promise<creationTxType> {
   const tx = await ddb.get({
-      PK: `tx#${id}`,
-      SK: `create`,
+    PK: `tx#${id}`,
+    SK: `create`,
   });
   if (tx === undefined) {
     throw new StepError(
-      'The transaction that you are attempting to continue has not been created.',
+      "The transaction that you are attempting to continue has not been created.",
       null
     );
   }
@@ -48,8 +48,8 @@ export async function getCreationTx(id: string): Promise<creationTxType> {
 
 export async function getTxAuthToken(id: string): Promise<emailVerifiedTx> {
   const tx = await ddb.get({
-      PK: `tx#${id}`,
-      SK: `verifyEmail`,
+    PK: `tx#${id}`,
+    SK: `verifyEmail`,
   });
   if (tx === undefined) {
     throw new StepError(

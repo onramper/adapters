@@ -1,0 +1,37 @@
+{
+  "name": "moonpay",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/onramper/adapters.git"
+  },
+  "version": "1.0.1",
+  "main": "build/index.js",
+  "license": "MIT",
+  "scripts": {
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint src --ext ts --no-ignore --fix && npm run format",
+    "checklint": "eslint src --ext ts --no-ignore && prettier --check \"src/**/*.ts\"",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.12.54",
+    "@typescript-eslint/eslint-plugin": "^2.2.0",
+    "@typescript-eslint/parser": "^2.2.0",
+    "eslint": "^6.3.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-import-resolver-typescript": "^1.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "jest": "^24.9.0",
+    "prettier": "^2.0.5",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "@types/node-fetch": "^2.5.7",
+    "iso3166-alpha-converter": "^1.0.0"
+  }
+}

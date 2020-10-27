@@ -1,6 +1,6 @@
-import { fiatData } from '../moonpayCountryData';
-import { moonpayBaseAPI } from '../constants';
-import fetch from '../utils/fetch';
+import { fiatData } from "../moonpayCountryData";
+import { moonpayBaseAPI } from "../constants";
+import fetch from "../utils/fetch";
 
 export interface customerIdentityData {
   firstName: string;
@@ -19,9 +19,9 @@ export interface customerIdentityData {
 export interface limitAPIResponse {
   limits: {
     type:
-      | 'buy_credit_debit_card'
-      | 'buy_gbp_bank_transfer'
-      | 'buy_sepa_bank_transfer';
+      | "buy_credit_debit_card"
+      | "buy_gbp_bank_transfer"
+      | "buy_sepa_bank_transfer";
     dailyLimit: number;
     dailyLimitRemaining: number;
     monthlyLimit: number;
@@ -32,11 +32,11 @@ export interface limitAPIResponse {
     requirements: {
       completed: boolean;
       identifier:
-        | 'identity_verification'
-        | 'document_verification'
-        | 'face_match_verification'
-        | 'address_verification'
-        | 'phone_number_verification';
+        | "identity_verification"
+        | "document_verification"
+        | "face_match_verification"
+        | "address_verification"
+        | "phone_number_verification";
     }[];
     completed: boolean;
   }[];
@@ -98,12 +98,12 @@ export async function setFiatCurrency(
   fiatCurrency: string
 ): Promise<customerAPIResponse> {
   return fetch(`${moonpayBaseAPI}/customers/me`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
-      'Content-Type': 'application/json',
-      'X-CSRF-TOKEN': token,
+      "Content-Type": "application/json",
+      "X-CSRF-TOKEN": token,
     },
-    credentials: 'include',
+    credentials: "include",
     body: JSON.stringify({
       defaultCurrencyId: fiatData[fiatCurrency].id,
     }),

@@ -1,10 +1,10 @@
-import FetchError from './FetchError';
+import FetchError from "./FetchError";
 
-test('Error constructor takes objects and makes them available', () => {
+test("Error constructor takes objects and makes them available", () => {
   const obj = {
     errors: [],
-    message: 'Wallet address does not match regex',
-    type: 'BadRequestError',
+    message: "Wallet address does not match regex",
+    type: "BadRequestError",
   };
   const err = new FetchError(obj);
   expect(err.errorObject).toEqual(obj);
