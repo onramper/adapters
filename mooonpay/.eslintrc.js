@@ -7,10 +7,10 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json',
   },
-  env: { jest: true, browser: true, node: true },
+  env: { jest: true, browser: true },
   rules: {
     'no-console': 'warn',
-    // Fix problem that causes eslint to request that all importsinclude the extension, thus breaking them
+    // Fix problem that causes eslint to request that all imports include the extension, thus breaking them
     'import/extensions': [
       'error',
       'ignorePackages',
