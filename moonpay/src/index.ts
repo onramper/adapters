@@ -1,7 +1,7 @@
 import processStep from "./processStep";
 import { StepError } from "./errors";
 import processFileUpload from "./processFileUpload";
-import finishCCTransaction from './finishCCTransaction';
+import finishCCTransaction from "./finishCCTransaction";
 
 const text = () => Promise.resolve("Unused");
 
@@ -21,7 +21,7 @@ function errorResponse(errorObj: { message: string; field?: string }) {
   };
 }
 
-export { finishCCTransaction }
+export { finishCCTransaction };
 export default async (url: string, body: string | File) => {
   try {
     if (body instanceof File) {
