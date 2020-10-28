@@ -108,23 +108,13 @@ export default async function (
       (req) => req.completed === false
     )[0].identifier;
     if (nextKYCLevel === "phone_number_verification") {
-      if (customerData.phoneNumber === null) {
-        // Get phone
-        return {
-          type: "form",
-          url: `${baseAPIUrl}/transaction/${identifier}/registerPhone/${encodeToken(
-            [txId, token]
-          )}`,
-          data: [items.phoneCountryCodeItem, items.phoneNumberItem],
-        };
-      }
-      // Verify phone
+      // Get phone
       return {
         type: "form",
-        url: `${baseAPIUrl}/transaction/${identifier}/verifyPhone/${encodeToken(
+        url: `${baseAPIUrl}/transaction/${identifier}/registerPhone/${encodeToken(
           [txId, token]
         )}`,
-        data: [items.verifyPhoneCodeItem],
+        data: [items.phoneCountryCodeItem, items.phoneNumberItem],
       };
     }
     if (nextKYCLevel === "document_verification") {
