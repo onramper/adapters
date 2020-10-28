@@ -8,7 +8,7 @@ import {
 } from "../constants";
 import { encodeToken, encodeJson } from "../utils/token";
 import { StepError, InternalError } from "../errors";
-import { nextStep, stepDataItems } from "../utils/lambda-response";
+import { nextStep, stepDataItems } from "../utils/types";
 import { requiredDocumentsAlpha3 } from "../moonpayCountryData";
 import fetch from "../utils/fetch";
 import getDocumentHumanName from "../documents/getDocumentHumanName";

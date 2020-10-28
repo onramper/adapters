@@ -8,10 +8,7 @@ import getDocumentHumanName from "./documents/getDocumentHumanName";
 import processStep from "./processStep";
 import { encodeToken } from "./utils/token";
 import { StepError } from "./errors";
-
-function generateErrorResponse(message: string) {
-  throw new StepError(message, null);
-}
+import { nextStep } from "./utils/types";
 
 export type queryStringValues = {
   gatewayIdentifier: string;
@@ -22,7 +19,7 @@ export type queryStringValues = {
   side: string;
 };
 
-export default async function (url: string, file: File) {
+export default async function (url: string, file: File): Promise<nextStep> {
   const [
     gatewayIdentifier,
     documentType,
@@ -33,8 +30,9 @@ export default async function (url: string, file: File) {
   ] = url.substr("https://upload.onramper.com/".length).split("/");
   const contentType = file.type;
   if (!acceptedContentTypes.includes(contentType)) {
-    return generateErrorResponse(
-      "The only 'content-type's accepted are `image/jpeg`, `image/png` and `application/pdf` but this request is none of these"
+    throw new StepError(
+      "The only 'content-type's accepted are `image/jpeg`, `image/png` and `application/pdf` but this request is none of these",
+      null
     );
   }
   const { signedRequest, key } = (await fetch(
@@ -76,11 +74,11 @@ export default async function (url: string, file: File) {
       acceptedContentTypes,
     };
   }
-  const nextStep = await processStep(
+  const followingStep = await processStep(
     "getNextKYCStep",
     encodeToken([txId, token]),
     "{}",
-    "es" // TODO: Un-hardcode country
+    "" // Country doesn't matter here
   );
-  return nextStep;
+  return followingStep;
 }

@@ -1,5 +1,5 @@
 import { moonpayBaseAPI, identifier, baseAPIUrl } from "../constants";
-import { nextStep, dateInfo } from "../utils/lambda-response";
+import { nextStep, dateInfo } from "../utils/types";
 import ddb from "../utils/dynamodb";
 import { encodeToken } from "../utils/token";
 import { identityTX, getCreationTx, getTxAuthToken } from "./dynamoTxs";

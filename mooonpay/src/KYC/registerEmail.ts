@@ -4,7 +4,7 @@ import {
   publishableApiKey,
   baseAPIUrl,
 } from "../constants";
-import { nextStep } from "../utils/lambda-response";
+import { nextStep } from "../utils/types";
 import fetch from "../utils/fetch";
 import { StepError } from "../errors";
 import { encodeToken } from "../utils/token";

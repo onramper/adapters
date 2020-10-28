@@ -1,5 +1,5 @@
 {
-  "name": "moonpay",
+  "name": "@onramper/moonpay",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/onramper/adapters.git"
@@ -31,7 +31,6 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "@types/node-fetch": "^2.5.7",
     "iso3166-alpha-converter": "^1.0.0"
   }
 }

@@ -1,4 +1,4 @@
-import { stepDataItems } from "../utils/lambda-response";
+import { stepDataItems } from "../utils/types";
 
 export type stepItem = stepDataItems[0];
 

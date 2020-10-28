@@ -1,4 +1,4 @@
-import { nextStep, stepDataItems } from "../utils/lambda-response";
+import { nextStep, stepDataItems } from "../utils/types";
 import {
   moonpayBaseAPI,
   identifier,

@@ -13,8 +13,13 @@
     "outDir": "build",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "lib":["ES2018",
-      "dom"]
+    "declaration": true,
+    "lib": [
+      "ES2018",
+      "dom"
+    ]
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }

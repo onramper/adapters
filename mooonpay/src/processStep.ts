@@ -7,7 +7,7 @@ import {
   verifyPhone,
   registerIdentity,
 } from "./KYC";
-import { nextStep } from "./utils/lambda-response";
+import { nextStep } from "./utils/types";
 import * as items from "./KYC/items";
 import getNextKYCStepFromTxIdAndToken from "./KYC/getNextKYCStepFromTxIdAndToken";
 import finishCCTransaction from "./finishCCTransaction";

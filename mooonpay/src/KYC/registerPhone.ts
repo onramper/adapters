@@ -1,5 +1,5 @@
 import { moonpayBaseAPI, identifier, baseAPIUrl } from "../constants";
-import { nextStep } from "../utils/lambda-response";
+import { nextStep } from "../utils/types";
 import { StepError } from "../errors";
 import { encodeToken } from "../utils/token";
 import fetch from "../utils/fetch";

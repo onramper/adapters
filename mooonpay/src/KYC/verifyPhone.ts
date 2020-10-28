@@ -1,4 +1,4 @@
-import { nextStep } from "../utils/lambda-response";
+import { nextStep } from "../utils/types";
 import { moonpayBaseAPI } from "../constants";
 import { StepError } from "../errors";
 import fetch from "../utils/fetch";

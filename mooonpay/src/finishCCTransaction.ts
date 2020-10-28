@@ -1,5 +1,5 @@
 import { moonpayBaseAPI, baseCreditCardSandboxUrl } from "./constants";
-import { nextStep } from "./utils/lambda-response";
+import { nextStep } from "./utils/types";
 import fetch from "./utils/fetch";
 import ddb from "./utils/dynamodb";
 import { getCreationTx, getTxAuthToken } from "./KYC/dynamoTxs";

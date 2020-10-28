@@ -1,5 +1,5 @@
 import StepError from "../../errors/StepError";
-import { stepDataItems } from "../lambda-response";
+import { stepDataItems } from "../types";
 import { encodeToken, safeEncode, decodedTokenType } from "./encodeToken";
 
 export { encodeToken };
