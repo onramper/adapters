@@ -1,21 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es2018",
+    "target": "ES6",
     "skipLibCheck": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
+    "module": "CommonJS",
     "noEmit": false,
     "outDir": "build",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "declaration": true,
     "lib": [
-      "ES2018",
+      "ES6",
       "dom"
     ]
   },
