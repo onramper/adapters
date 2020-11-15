@@ -102,7 +102,7 @@ test("snapshot normal response", async () => {
         },
       ],
       "type": "form",
-      "url": "https://api.onramper.dev/transaction/Moonpay/verifyEmail/WyIxMjMiLCJ3YXNzdXBAc3VwLmNvbSJd",
+      "url": "https://api.onramper.com/transaction/Moonpay/verifyEmail/WyIxMjMiLCJ3YXNzdXBAc3VwLmNvbSJd",
     }
   `);
 });

@@ -28,7 +28,7 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
           ],
           "humanName": "Passport - Front",
           "type": "file",
-          "url": "https://upload.onramper.dev/Moonpay/passport/123/ESP/sumAuthToken/front",
+          "url": "https://upload.onramper.com/Moonpay/passport/123/ESP/sumAuthToken/front",
         },
         Object {
           "acceptedContentTypes": Array [
@@ -38,7 +38,7 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
           ],
           "humanName": "Driver's License - Front",
           "type": "file",
-          "url": "https://upload.onramper.dev/Moonpay/driving_licence/123/ESP/sumAuthToken/front",
+          "url": "https://upload.onramper.com/Moonpay/driving_licence/123/ESP/sumAuthToken/front",
         },
         Object {
           "acceptedContentTypes": Array [
@@ -48,7 +48,7 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
           ],
           "humanName": "National Identity Card - Front",
           "type": "file",
-          "url": "https://upload.onramper.dev/Moonpay/national_identity_card/123/ESP/sumAuthToken/front",
+          "url": "https://upload.onramper.com/Moonpay/national_identity_card/123/ESP/sumAuthToken/front",
         },
         Object {
           "acceptedContentTypes": Array [
@@ -58,7 +58,7 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
           ],
           "humanName": "Residence Card - Front",
           "type": "file",
-          "url": "https://upload.onramper.dev/Moonpay/residence_permit/123/ESP/sumAuthToken/front",
+          "url": "https://upload.onramper.com/Moonpay/residence_permit/123/ESP/sumAuthToken/front",
         },
       ],
       "type": "pickOne",
@@ -78,7 +78,7 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
   expect(lowAmount).toMatchInlineSnapshot(`
     Object {
       "type": "iframe",
-      "url": "https://sandbox.onramper.dev?customerId=undefined&customerAddress=eyJjb3VudHJ5IjoiRVNQIn0=&transactionId=123",
+      "url": "https://sandbox.onramper.com?customerId=undefined&customerAddress=eyJjb3VudHJ5IjoiRVNQIn0=&transactionId=123",
     }
   `);
 });
