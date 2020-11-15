@@ -21,8 +21,24 @@ function errorResponse(errorObj: { message: string; field?: string }) {
   };
 }
 
+async function isBrave(): Promise<boolean> {
+  return (
+    (await (navigator as {
+      brave?: {
+        isBrave: () => Promise<boolean>;
+      };
+    }).brave?.isBrave()) || false
+  );
+}
+
 export { finishCCTransaction };
 export default async (url: string, body: string | File) => {
+  if (await isBrave()) {
+    return errorResponse({
+      message:
+        "Brave's cookie policy is not compatible with Moonpay, please use a different browser",
+    });
+  }
   try {
     if (body instanceof File) {
       return successResponse(processFileUpload(url, body));
