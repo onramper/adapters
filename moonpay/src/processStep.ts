@@ -70,6 +70,7 @@ export default function (
   step: string,
   token: string,
   body: any,
+  onramperApiKey: string,
   country: string
 ): Promise<nextStep> {
   let tokenValues: (string | number)[];
@@ -104,6 +105,7 @@ export default function (
       fiatCurrency,
       cryptoCurrency,
       paymentMethod,
+      onramperApiKey,
       body[items.emailItem.name],
       body[items.cryptocurrencyAddress.name],
       country
@@ -119,6 +121,7 @@ export default function (
       id,
       email,
       body[items.verifyEmailCodeItem.name],
+      onramperApiKey,
       country
     );
   }

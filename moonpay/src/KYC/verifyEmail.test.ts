@@ -14,7 +14,7 @@ test("verifyEmail stores the right token", async () => {
       ],
     ])
   );
-  await verifyEmail("123", "a@b.c", "1234", "es");
+  await verifyEmail("123", "a@b.c", "1234", "pk_test_MOCK", "es");
   expect((await getTxAuthToken("123")).csrfToken).toBe(
     "PFIAFM5YLznimwLCHYhglcotrwcVlv"
   );

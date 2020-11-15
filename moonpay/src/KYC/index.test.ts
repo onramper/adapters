@@ -15,6 +15,7 @@ test("transaction process works properly", async () => {
   url = (
     await (registerEmail as any)(
       ...decodeToken(token),
+      "pk_prod_MOCK",
       "test@test.com",
       "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
       "es"

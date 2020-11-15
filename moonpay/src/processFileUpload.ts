@@ -19,7 +19,11 @@ export type queryStringValues = {
   side: string;
 };
 
-export default async function (url: string, file: File): Promise<nextStep> {
+export default async function (
+  url: string,
+  file: File,
+  onramperApiKey: string
+): Promise<nextStep> {
   const [
     gatewayIdentifier,
     documentType,
@@ -36,7 +40,9 @@ export default async function (url: string, file: File): Promise<nextStep> {
     );
   }
   const { signedRequest, key } = (await fetch(
-    `${moonpayBaseAPI}/files/s3_signed_request?apiKey=${publishableApiKey}&fileType=${contentType}`
+    `${moonpayBaseAPI}/files/s3_signed_request?apiKey=${publishableApiKey(
+      onramperApiKey
+    )}&fileType=${contentType}`
   ).then((res) => res.json())) as {
     key: string;
     signedRequest: string;
@@ -78,6 +84,7 @@ export default async function (url: string, file: File): Promise<nextStep> {
     "getNextKYCStep",
     encodeToken([txId, token]),
     "{}",
+    onramperApiKey,
     "" // Country doesn't matter here
   );
   return followingStep;

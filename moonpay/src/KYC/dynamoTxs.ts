@@ -11,6 +11,8 @@ export interface creationTxType {
   paymentMethod: string;
   cryptocurrencyAddress: string;
   country: string;
+  apiKey: string;
+  extraFees: number;
 }
 
 export interface emailVerifiedTx {

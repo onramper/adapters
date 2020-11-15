@@ -50,7 +50,7 @@ export default async function (
       credentials: "include",
       body: JSON.stringify({
         baseCurrencyAmount: creationTx.fiatAmount,
-        extraFeePercentage: 0, // TODO
+        extraFeePercentage: creationTx.extraFees,
         areFeesIncluded: true,
         walletAddress: creationTx.cryptocurrencyAddress,
         baseCurrencyCode: creationTx.fiatCurrency.toLowerCase(),

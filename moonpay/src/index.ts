@@ -32,7 +32,14 @@ async function isBrave(): Promise<boolean> {
 }
 
 export { finishCCTransaction };
-export default async (url: string, body: string | File) => {
+export default async (
+  url: string,
+  params: {
+    _method: string;
+    headers: Headers;
+    body: string | File;
+  }
+) => {
   if (await isBrave()) {
     return errorResponse({
       message:
@@ -40,15 +47,24 @@ export default async (url: string, body: string | File) => {
     });
   }
   try {
-    if (body instanceof File) {
-      return successResponse(processFileUpload(url, body));
+    const rawOnramperApiKey = params.headers.get("Authorization");
+    if (rawOnramperApiKey === null) {
+      return errorResponse({
+        message: "Authorization header with API key was not provided",
+      });
+    }
+    const onramperApiKey = rawOnramperApiKey.substr("Basic ".length);
+    if (params.body instanceof File) {
+      return successResponse(
+        processFileUpload(url, params.body, onramperApiKey)
+      );
     }
     const [step, token] = url
       .substr("https://api.onramper.dev/transaction/Moonpay/".length)
       .split("/");
-    const parsedBody = JSON.parse(body);
+    const parsedBody = JSON.parse(params.body);
     return successResponse(
-      await processStep(step, token, parsedBody, "es") // TODO: Pass the country retrieved from params or /gateways
+      await processStep(step, token, parsedBody, onramperApiKey, "es") // TODO: Pass the country retrieved from params or /gateways
     );
   } catch (e) {
     if (e instanceof StepError) {

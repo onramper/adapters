@@ -17,12 +17,19 @@ interface EmailLoginResponse {
   showTermsOfUse: boolean;
 }
 
+interface OnramperFees {
+  onramper: number;
+  partner: number;
+  totatl: number;
+}
+
 export default async function (
   id: string,
   amount: number,
   fiatCurrency: string,
   cryptoCurrency: string,
   paymentMethod: string,
+  onramperApiKey: string,
   email: string,
   cryptocurrencyAddress: string,
   country: string
@@ -36,7 +43,9 @@ export default async function (
   }
   try {
     const res = (await fetch(
-      `${moonpayBaseAPI}/customers/email_login?apiKey=${publishableApiKey}`,
+      `${moonpayBaseAPI}/customers/email_login?apiKey=${publishableApiKey(
+        onramperApiKey
+      )}`,
       {
         method: "POST",
         headers: {
@@ -57,6 +66,17 @@ export default async function (
       items.emailItem.name
     );
   }
+  let onramperFees: OnramperFees;
+  try {
+    onramperFees = await fetch(`${baseAPIUrl}/partner/fees`, {
+      method: "GET",
+      headers: {
+        Authorization: `Basic ${onramperApiKey}`,
+      },
+    }).then((r) => r.json());
+  } catch (e) {
+    throw new StepError("The provided API key is invalid.", null);
+  }
   await createCreationTx({
     PK: `tx#${id}`,
     SK: `create`,
@@ -67,6 +87,8 @@ export default async function (
     paymentMethod,
     cryptocurrencyAddress,
     country,
+    apiKey: onramperApiKey,
+    extraFees: onramperFees.totatl,
   });
   const termsOfUse: items.stepItem = {
     type: "boolean",

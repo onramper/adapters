@@ -18,12 +18,15 @@ export default async function (
   id: string,
   email: string,
   code: string,
+  onramperApiKey: string,
   country: string
 ): Promise<nextStep> {
   let res: verifyEmailAPIResponse;
   try {
     res = await fetch(
-      `${moonpayBaseAPI}/customers/email_login?apiKey=${publishableApiKey}`,
+      `${moonpayBaseAPI}/customers/email_login?apiKey=${publishableApiKey(
+        onramperApiKey
+      )}`,
       {
         method: "POST",
         headers: {

@@ -8,17 +8,29 @@ import {
 test("processStep() fails if the token is incorrect or doesn't carry the right data", () => {
   // Incorrect token formating
   expect(() =>
-    processStep("", "unformatted_token", {}, "es")
+    processStep("", "unformatted_token", {}, "pk_prod_MOCK", "es")
   ).toThrowErrorMatchingInlineSnapshot(`"URL is incorrect."`);
   // Incorrect token data
   expect(() =>
-    processStep("email", encodeToken(["a", "b", "c", 2]), {}, "es")
+    processStep(
+      "email",
+      encodeToken(["a", "b", "c", 2]),
+      {},
+      "pk_prod_MOCK",
+      "es"
+    )
   ).toThrowErrorMatchingInlineSnapshot(`"URL is incorrect."`);
   expect(() =>
-    processStep("email", encodeToken(["a"]), {}, "es")
+    processStep("email", encodeToken(["a"]), {}, "pk_prod_MOCK", "es")
   ).toThrowErrorMatchingInlineSnapshot(`"URL is incorrect."`);
   expect(() =>
-    processStep("verifyEmail", encodeToken(["a", "b", "c", 2]), {}, "es")
+    processStep(
+      "verifyEmail",
+      encodeToken(["a", "b", "c", 2]),
+      {},
+      "pk_prod_MOCK",
+      "es"
+    )
   ).toThrowErrorMatchingInlineSnapshot(
     `"Parameter 'verifyEmailCode' is not defined on json body."`
   );
@@ -26,7 +38,7 @@ test("processStep() fails if the token is incorrect or doesn't carry the right d
 
 test("if step doesn't exist, a descriptive error is thrown", () => {
   expect(() =>
-    processStep("wrong", encodeToken([1]), {}, "es")
+    processStep("wrong", encodeToken([1]), {}, "pk_prod_MOCK", "es")
   ).toThrowErrorMatchingInlineSnapshot(
     `"Step 'wrong' is not defined for Moonpay."`
   );
@@ -34,7 +46,13 @@ test("if step doesn't exist, a descriptive error is thrown", () => {
 
 test("missing identity data on body results in an error that reports on the missing field", async () => {
   expect(() =>
-    processStep("identity", encodeToken(["1"]), { town: "A" }, "es")
+    processStep(
+      "identity",
+      encodeToken(["1"]),
+      { town: "A" },
+      "pk_prod_MOCK",
+      "es"
+    )
   ).toThrowErrorMatchingInlineSnapshot(
     `"Parameter 'firstName' is not defined on json body."`
   );
@@ -56,6 +74,7 @@ test("wrong country triggers an error on /identity", async () => {
         postCode: "",
         country: "WRONG",
       },
+      "pk_prod_MOCK",
       "es"
     )
   ).rejects.toThrowErrorMatchingInlineSnapshot(

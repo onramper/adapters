@@ -12,6 +12,8 @@ export async function createMockCreationTx(tx: Partial<creationTxType>) {
     paymentMethod: "creditCard",
     country: "es",
     cryptocurrencyAddress: "0xpleb",
+    apiKey: "pk_test_MOCK",
+    extraFees: 10,
     ...tx,
   });
 }
