@@ -35,7 +35,7 @@ export { finishCCTransaction };
 export default async (
   url: string,
   params: {
-    _method: string;
+    method?: string;
     headers: Headers;
     body: string | File;
   }
