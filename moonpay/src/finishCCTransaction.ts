@@ -57,6 +57,7 @@ export default async function (
         currencyCode: creationTx.cryptoCurrency.toLowerCase(),
         returnUrl: `${baseCreditCardSandboxUrl}/finished.html`,
         tokenId: ccTokenId,
+        externalTransactionId: `${txId};${creationTx.apiKey}`,
       }),
     }).then((res) => res.json())) as TransactionResponse;
     ddb.put({
