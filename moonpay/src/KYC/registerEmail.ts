@@ -20,7 +20,7 @@ interface EmailLoginResponse {
 interface OnramperFees {
   onramper: number;
   partner: number;
-  totatl: number;
+  total: number;
 }
 
 export default async function (
@@ -40,6 +40,17 @@ export default async function (
       "The provided cryptocurrency address is not valid.",
       items.cryptocurrencyAddress.name
     );
+  }
+  let onramperFees: OnramperFees;
+  try {
+    onramperFees = await fetch(`${baseAPIUrl}/partner/fees`, {
+      method: "GET",
+      headers: {
+        Authorization: `Basic ${onramperApiKey}`,
+      },
+    }).then((r) => r.json());
+  } catch (e) {
+    throw new StepError("The provided API key is invalid.", null);
   }
   try {
     const res = (await fetch(
@@ -66,17 +77,6 @@ export default async function (
       items.emailItem.name
     );
   }
-  let onramperFees: OnramperFees;
-  try {
-    onramperFees = await fetch(`${baseAPIUrl}/partner/fees`, {
-      method: "GET",
-      headers: {
-        Authorization: `Basic ${onramperApiKey}`,
-      },
-    }).then((r) => r.json());
-  } catch (e) {
-    throw new StepError("The provided API key is invalid.", null);
-  }
   await createCreationTx({
     PK: `tx#${id}`,
     SK: `create`,
@@ -88,7 +88,7 @@ export default async function (
     cryptocurrencyAddress,
     country,
     apiKey: onramperApiKey,
-    extraFees: onramperFees.totatl,
+    extraFees: onramperFees.total,
   });
   const termsOfUse: items.stepItem = {
     type: "boolean",

@@ -54,7 +54,7 @@ test("error is thrown if crypto address is invalid", async () => {
 
 test("moonpay errors are properly propagated", async () => {
   simulateSingleFetchFailure(
-    null,
+    "https://api.moonpay.io",
     `{"errors":[{"target":{"email":"a@b.c"},"value":"a@b.c","property":"email","children":[],"constraints":{"isEmail":"Email seems to be invalid, make sure it’s written correctly and try again"}}],"message":"Invalid body, check 'errors' property for more info.","type":"BadRequestError"}`
   );
   await expect(call()).rejects.toThrowErrorMatchingInlineSnapshot(

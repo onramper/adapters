@@ -10,7 +10,7 @@ const apiResponses = {
   "https://api.moonpay.io/v3/customers/email_login":
     '{"preAuthenticated":true,"showTermsOfUse":true}',
   "https://api.onramper.com/partner/fees":
-    '{"onramper":10,"partner":20,"totatl":30}',
+    '{"onramper":10,"partner":20,"total":30}',
 };
 
 export function setFetchReturn(data: string, headers?: Map<string, string>) {
