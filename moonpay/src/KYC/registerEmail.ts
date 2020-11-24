@@ -97,7 +97,7 @@ export default async function (
   });
   sendWaypoint(id, onramperApiKey, "email", {
     ...record,
-    email: hash(email),
+    email: await hash(email),
   });
   const termsOfUse: items.stepItem = {
     type: "boolean",
