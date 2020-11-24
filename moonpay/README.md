@@ -22,7 +22,7 @@ const receiveMessage = async (event: MessageEvent) => {
   if (event.origin !== baseCreditCardSandboxUrl)
     return;
   if (event.data.type) {
-    replaceScreen(vent.data)
+    replaceScreen(event.data)
   } else if (event.data.transactionId) {
     const returnedNextStep = await finishCCTransaction(event.data.transactionId, event.data.ccTokenId);
     replaceScreen(returnedNextStep)
