@@ -8,7 +8,7 @@ import {
 
 test("encoding doesn't generate any unsafe URL characters", () => {
   const data = ["327Yyt32??^"];
-  expect(Buffer.from(JSON.stringify(data)).toString("base64")).toContain("/");
+  expect(btoa(JSON.stringify(data))).toContain("/");
   expect(encodeToken(data)).not.toContain("/");
 });
 

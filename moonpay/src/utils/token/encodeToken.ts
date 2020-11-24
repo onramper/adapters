@@ -8,13 +8,17 @@ export function replaceAll(
 
 // Use 'URL and Filename Safe Alphabet' encoding to avoid '/' characters
 // See https://tools.ietf.org/html/rfc4648#section-5
-// This encoding is accepted by Buffer.from(buf, 'base64')
-export function safeEncode(buf: Buffer) {
-  return replaceAll(replaceAll(buf.toString("base64"), "/", "_"), "+", "-");
+export function safeEncode(buf: string) {
+  return replaceAll(replaceAll(btoa(buf), "/", "_"), "+", "-");
 }
 
 export type decodedTokenType = Array<number | string>;
 
 export function encodeToken(data: decodedTokenType) {
-  return safeEncode(Buffer.from(JSON.stringify(data)));
+  return safeEncode(JSON.stringify(data));
+}
+
+export function decodeToken(token: string): decodedTokenType {
+  const base64Token = replaceAll(replaceAll(token, "_", "/"), "-", "+");
+  return JSON.parse(atob(base64Token));
 }

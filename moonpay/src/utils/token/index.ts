@@ -1,19 +1,20 @@
 import StepError from "../../errors/StepError";
 import { stepDataItems } from "../types";
-import { encodeToken, safeEncode, decodedTokenType } from "./encodeToken";
+import {
+  encodeToken,
+  safeEncode,
+  decodedTokenType,
+  decodeToken,
+} from "./encodeToken";
 
-export { encodeToken };
+export { encodeToken, decodeToken };
 
 export function encodeJson(data: any): string {
-  return safeEncode(Buffer.from(JSON.stringify(data)));
+  return safeEncode(JSON.stringify(data));
 }
 
 export function randomId(): string {
   return Math.random().toString();
-}
-
-export function decodeToken(token: string): decodedTokenType {
-  return JSON.parse(Buffer.from(token, "base64").toString());
 }
 
 export function checkTokenTypes<expectedTypes extends decodedTokenType>(
