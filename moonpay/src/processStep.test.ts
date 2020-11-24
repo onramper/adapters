@@ -5,6 +5,8 @@ import {
   createMockTxAuthToken,
 } from "./KYC/mockTransactions";
 
+jest.mock("./utils/fetch");
+
 test("processStep() fails if the token is incorrect or doesn't carry the right data", () => {
   // Incorrect token formating
   expect(() =>

@@ -12,9 +12,14 @@ import * as items from "./KYC/items";
 import getNextKYCStepFromTxIdAndToken from "./KYC/getNextKYCStepFromTxIdAndToken";
 import finishCCTransaction from "./finishCCTransaction";
 import registerBank from "./registerBank";
+import sendWaypoint from "./sendWaypoint";
 
 // Separated cause it's too bulky
-function processIdentityState(tokenValues: (string | number)[], body: any) {
+function processIdentityState(
+  tokenValues: (string | number)[],
+  body: any,
+  onramperApiKey: string
+) {
   if (
     !checkTokenTypes<
       [
@@ -55,6 +60,7 @@ function processIdentityState(tokenValues: (string | number)[], body: any) {
   }
   return registerIdentity(
     id,
+    onramperApiKey,
     firstName,
     lastName,
     { day, month, year },
@@ -78,6 +84,9 @@ export default function (
     tokenValues = decodeToken(token);
   } catch (e) {
     throw new StepError("URL is incorrect.", null);
+  }
+  if (step !== "email" && step !== "identity") {
+    sendWaypoint(tokenValues[0].toString(), onramperApiKey, step, {});
   }
   if (step === "email") {
     if (
@@ -141,6 +150,7 @@ export default function (
     ]); // Doesn't include 'state', it's optional
     return registerIdentity(
       id,
+      onramperApiKey,
       body[items.firstNameItem.name],
       body[items.lastNameItem.name],
       body[items.dateOfBirthItem.name],
@@ -152,7 +162,7 @@ export default function (
     );
   }
   if (step === "identityState") {
-    return processIdentityState(tokenValues, body);
+    return processIdentityState(tokenValues, body, onramperApiKey);
   }
   if (step === "getNextKYCStep") {
     if (!checkTokenTypes<[string, string]>(tokenValues, ["", ""])) {

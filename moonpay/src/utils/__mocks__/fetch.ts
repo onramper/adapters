@@ -11,6 +11,8 @@ const apiResponses = {
     '{"preAuthenticated":true,"showTermsOfUse":true}',
   "https://api.onramper.com/partner/fees":
     '{"onramper":10,"partner":20,"total":30}',
+  "https://api.onramper.com/transaction/Moonpay/waypoint_":
+    '{"accepted": true}',
 };
 
 export function setFetchReturn(data: string, headers?: Map<string, string>) {
@@ -24,17 +26,21 @@ export function setFetchReturn(data: string, headers?: Map<string, string>) {
   );
 }
 
-const singleFailUrls: string[] = [];
+const singleFailUrls: {
+  url: string;
+  response: any;
+}[] = [];
 
 fetchMock.mockImplementation(
   jest.fn().mockImplementation((url: string) => {
+    const indexFailure = singleFailUrls.findIndex((s) => url.startsWith(s.url));
+    if (indexFailure !== -1) {
+      const res = singleFailUrls[indexFailure].response;
+      singleFailUrls.splice(indexFailure, 1);
+      throw new FetchError(res);
+    }
     for (const [urlStart, response] of Object.entries(apiResponses)) {
       if (url.startsWith(urlStart)) {
-        const indexFailure = singleFailUrls.findIndex((s) => url.startsWith(s));
-        if (indexFailure !== -1) {
-          singleFailUrls.splice(indexFailure, 1);
-          throw new FetchError({});
-        }
         return Promise.resolve({
           text: jest.fn().mockResolvedValue(response),
           json: jest.fn().mockImplementation(() => JSON.parse(response)),
@@ -49,14 +55,18 @@ export function simulateSingleFetchFailure(
   url: string | null = null,
   response?: string
 ) {
+  const parsedResponse = JSON.parse(response ?? "{}");
   if (url === null) {
     fetchMock.mockImplementationOnce(
       jest.fn().mockImplementation(() => {
-        throw new FetchError(JSON.parse(response ?? "{}"));
+        throw new FetchError(parsedResponse);
       })
     );
   } else {
-    singleFailUrls.push(url);
+    singleFailUrls.push({
+      url,
+      response: parsedResponse,
+    });
   }
 }
 

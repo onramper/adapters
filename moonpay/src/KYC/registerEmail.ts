@@ -11,6 +11,8 @@ import { encodeToken } from "../utils/token";
 import { createCreationTx } from "./dynamoTxs";
 import * as items from "./items";
 import validateAddress from "../utils/validateAddress";
+import sendWaypoint from "../sendWaypoint";
+import hash from "../utils/hash";
 
 interface EmailLoginResponse {
   preAuthenticated: boolean;
@@ -77,18 +79,25 @@ export default async function (
       items.emailItem.name
     );
   }
-  await createCreationTx({
-    PK: `tx#${id}`,
-    SK: `create`,
-    Timestamp: Date.now(),
+  const record = {
     fiatCurrency,
     cryptoCurrency,
     fiatAmount: amount,
     paymentMethod,
+    extraFees: onramperFees.total,
+  };
+  await createCreationTx({
+    PK: `tx#${id}`,
+    SK: `create`,
+    Timestamp: Date.now(),
+    ...record,
     cryptocurrencyAddress,
     country,
     apiKey: onramperApiKey,
-    extraFees: onramperFees.total,
+  });
+  sendWaypoint(id, onramperApiKey, "email", {
+    ...record,
+    email: hash(email),
   });
   const termsOfUse: items.stepItem = {
     type: "boolean",
