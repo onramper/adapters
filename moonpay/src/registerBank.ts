@@ -88,12 +88,13 @@ export default async function (
       credentials: "include",
       body: JSON.stringify({
         baseCurrencyAmount: creationTx.fiatAmount,
-        extraFeePercentage: 0, // TODO
+        extraFeePercentage: creationTx.extraFees,
         areFeesIncluded: true,
         walletAddress: creationTx.cryptocurrencyAddress,
         baseCurrencyCode: bankInfo.currencyCode,
         currencyCode: creationTx.cryptoCurrency.toLowerCase(),
         bankAccountId: bankResponse.id,
+        externalTransactionId: `${txId};${creationTx.apiKey}`,
       }),
     }).then((res) => res.json())) as CreateBankTransactionResponse;
     ddb.put({
