@@ -11,7 +11,10 @@ export const acceptedContentTypes = [
   "image/png",
   "application/pdf",
 ];
-const domain = "onramper.com";
+const domain =
+  window.origin === "https://widget.onramper.dev"
+    ? "onramper.dev"
+    : "onramper.com";
 export const baseCreditCardSandboxUrl = `https://sandbox.${domain}`;
 export const baseAPIUrl = `https://api.${domain}`;
 export const baseUploadsUrl = `https://upload.${domain}`;
