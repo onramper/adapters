@@ -32,9 +32,9 @@ async function isBrave(): Promise<boolean> {
   );
 }
 
-const urlRegex = /https:\/\/(api|upload).onramper.(dev|com)\/(transaction\/)?Moonpay.*/;
+const moonpayUrlRegex = /https:\/\/(api|upload).onramper.(dev|com)\/(transaction\/)?Moonpay.*/;
 
-export { finishCCTransaction, baseCreditCardSandboxUrl, urlRegex };
+export { finishCCTransaction, baseCreditCardSandboxUrl, moonpayUrlRegex };
 export default async (
   url: string,
   params: {
