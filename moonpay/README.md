@@ -1,11 +1,11 @@
 ## Usage
 It works like a fetch mock:
 ```ts
-import processMoonpayStep from '@onramper/moonpay-adapter'
+import processMoonpayStep, { urlRegex } from '@onramper/moonpay-adapter'
 
 const body = step.type === 'file' ? data as File : JSON.stringify(data)
 let nextStep: FetchResponse;
-if(/https:\/\/(api|upload).onramper.(dev|com)\/(transaction\/)?Moonpay.*/.test(step.url)){
+if(urlRegex.test(step.url)){
     nextStep = await processMoonpayStep(step.url, body);
 } else {
     nextStep = await fetch(`${step.url}?${urlParams}`, { method, body })
