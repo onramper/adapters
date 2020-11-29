@@ -4,6 +4,7 @@ import fetch from "./utils/fetch";
 import ddb from "./utils/dynamodb";
 import { getCreationTx, getTxAuthToken } from "./KYC/dynamoTxs";
 import { StepError, FetchError } from "./errors";
+import sendWaypoint from "./sendWaypoint";
 
 interface TransactionResponse {
   id: string;
@@ -64,6 +65,9 @@ export default async function (
       PK: `tx#${txId}`,
       SK: `complete`,
       Timestamp: Date.now(),
+      status: moonpayTx.status,
+    });
+    sendWaypoint(txId, creationTx.apiKey, "registerCreditCardToken", {
       status: moonpayTx.status,
     });
     if (moonpayTx.status === "waitingAuthorization") {

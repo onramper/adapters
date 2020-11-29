@@ -10,7 +10,6 @@ import {
 import { nextStep } from "./utils/types";
 import * as items from "./KYC/items";
 import getNextKYCStepFromTxIdAndToken from "./KYC/getNextKYCStepFromTxIdAndToken";
-import finishCCTransaction from "./finishCCTransaction";
 import registerBank from "./registerBank";
 import sendWaypoint from "./sendWaypoint";
 
@@ -85,7 +84,11 @@ export default function (
   } catch (e) {
     throw new StepError("URL is incorrect.", null);
   }
-  if (step !== "email" && step !== "identity") {
+  if (
+    step !== "email" &&
+    step !== "identity" &&
+    step !== "registerCreditCardToken"
+  ) {
     sendWaypoint(tokenValues[0].toString(), onramperApiKey, step, {});
   }
   if (step === "email") {
@@ -218,10 +221,9 @@ export default function (
     throw new StepError("URL is incorrect, unaccepted fiat currency.", null);
   }
   if (step === "registerCreditCardToken") {
-    checkBodyParams(body, [items.transactionId, items.creditCardTokenId]);
-    return finishCCTransaction(
-      body[items.transactionId.name],
-      body[items.creditCardTokenId.name]
+    throw new StepError(
+      `The last step of the credit card flow, 'registerCreditCardToken', should not be called through the default method, instead it should be called with the function 'finishCCTransaction' that is directly exported from the package. Check the package's readme for more details.`,
+      null
     );
   }
   throw new StepError(`Step '${step}' is not defined for Moonpay.`, null);
