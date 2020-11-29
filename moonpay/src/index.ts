@@ -2,6 +2,7 @@ import processStep from "./processStep";
 import { StepError } from "./errors";
 import processFileUpload from "./processFileUpload";
 import finishCCTransaction from "./finishCCTransaction";
+import { baseCreditCardSandboxUrl } from "./constants";
 
 const text = () => Promise.resolve("Unused");
 
@@ -31,7 +32,7 @@ async function isBrave(): Promise<boolean> {
   );
 }
 
-export { finishCCTransaction };
+export { finishCCTransaction, baseCreditCardSandboxUrl };
 export default async (
   url: string,
   params: {
