@@ -13,6 +13,8 @@ const apiResponses = {
     '{"onramper":10,"partner":20,"total":30}',
   "https://api.onramper.com/transaction/Moonpay/waypoint_":
     '{"accepted": true}',
+  "https://api.moonpay.io/v3/bank_accounts":
+    '{"id":"88888888-d636-4faa-909a-NEW-ID","createdAt":"2019-10-24T08:43:32.013Z","updatedAt":"2019-10-24T08:43:32.013Z","iban":"AT622905300345678901","bic":"OSTBATYYZZZ","accountNumber":null,"sortCode":null,"bankName":"Bank Österreich","currencyId":"71435a8d-211c-4664-a59e-2a5361a6c5a7","customerId":"7138fb07-7c66-4f9a-a83a-a106e66bfde6"}',
 };
 
 export function setFetchReturn(data: string, headers?: Map<string, string>) {

@@ -5,7 +5,7 @@ import ddb from "./utils/dynamodb";
 import { getCreationTx } from "./KYC/dynamoTxs";
 import { StepError } from "./errors";
 
-interface CreateBankResponse {
+interface BankResponse {
   id: string;
   createdAt: string;
   updatedAt: string;
@@ -17,6 +17,9 @@ interface CreateBankResponse {
   currencyId: string;
   customerId: string;
 }
+
+type CreateBankResponse = BankResponse;
+type GetBanksResponse = BankResponse[];
 
 interface CreateBankTransactionResponse {
   id: string;
@@ -54,38 +57,65 @@ interface CreateBankTransactionResponse {
   externalTransactionId: null;
 }
 
+type BankInfo =
+  | {
+      currencyCode: "eur";
+      iban: string;
+    }
+  | {
+      currencyCode: "gbp";
+      accountNumber: string;
+      sortCode: string;
+    };
+
+function findBankId(
+  bankInfo: BankInfo,
+  bankResponse: GetBanksResponse
+): string | undefined {
+  return bankResponse.find((bank) => {
+    if (bankInfo.currencyCode === "eur") {
+      return bank.iban === bankInfo.iban;
+    }
+    return (
+      bank.accountNumber === bankInfo.accountNumber &&
+      bank.sortCode === bankInfo.sortCode
+    );
+  })?.id;
+}
+
 export default async function (
   txId: string,
   csrfToken: string,
-  bankInfo:
-    | {
-        currencyCode: "eur";
-        iban: string;
-      }
-    | {
-        currencyCode: "gbp";
-        accountNumber: string;
-        sortCode: string;
-      }
+  bankInfo: BankInfo
 ): Promise<nextStep> {
+  const commonAPIParams = {
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-TOKEN": csrfToken,
+    },
+    credentials: "include",
+  } as const;
   try {
-    const bankResponse = (await fetch(`${moonpayBaseAPI}/bank_accounts`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-TOKEN": csrfToken,
-      },
-      credentials: "include",
-      body: JSON.stringify(bankInfo),
-    }).then((res) => res.json())) as CreateBankResponse;
+    const getBanksResponse = (await fetch(`${moonpayBaseAPI}/bank_accounts`, {
+      method: "GET",
+      ...commonAPIParams,
+    }).then((res) => res.json())) as GetBanksResponse;
+    let bankId = findBankId(bankInfo, getBanksResponse);
+    if (bankId === undefined) {
+      const createBankResponse = (await fetch(
+        `${moonpayBaseAPI}/bank_accounts`,
+        {
+          method: "POST",
+          ...commonAPIParams,
+          body: JSON.stringify(bankInfo),
+        }
+      ).then((res) => res.json())) as CreateBankResponse;
+      bankId = createBankResponse.id;
+    }
     const creationTx = await getCreationTx(txId);
     const txCreationResponse = (await fetch(`${moonpayBaseAPI}/transactions`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-TOKEN": csrfToken,
-      },
-      credentials: "include",
+      ...commonAPIParams,
       body: JSON.stringify({
         baseCurrencyAmount: creationTx.fiatAmount,
         extraFeePercentage: creationTx.extraFees,
@@ -93,7 +123,7 @@ export default async function (
         walletAddress: creationTx.cryptocurrencyAddress,
         baseCurrencyCode: bankInfo.currencyCode,
         currencyCode: creationTx.cryptoCurrency.toLowerCase(),
-        bankAccountId: bankResponse.id,
+        bankAccountId: bankId,
         externalTransactionId: `${txId};${creationTx.apiKey}`,
       }),
     }).then((res) => res.json())) as CreateBankTransactionResponse;
