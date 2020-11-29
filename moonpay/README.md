@@ -27,7 +27,7 @@ const receiveMessage = async (event: MessageEvent) => {
     const returnedNextStep = await finishCCTransaction(event.data.transactionId, event.data.ccTokenId);
     replaceScreen(returnedNextStep)
   } else {
-    setError('Unknow error. Please, contact help@onramper.com and provide the following info: ' + nextStep.url)
+    setError('Unknown error. Please, contact help@onramper.com and provide the following info: ' + nextStep.url)
   }
 }
 window.addEventListener("message", receiveMessage);
