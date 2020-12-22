@@ -127,7 +127,12 @@ export default async function (
     );
   } catch (e) {
     if (e instanceof FetchError) {
-      if (
+      if (e.errorObject.type === "UnauthorizedError") {
+        throw new StepError(
+          "This browser's cookie policy is not compatible with Moonpay, please use a different browser",
+          null
+        );
+      } else if (
         e.errorObject.message ===
         "Invalid body, check 'errors' property for more info."
       ) {
