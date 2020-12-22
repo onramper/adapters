@@ -16,6 +16,7 @@ test("simple type snapshot of all exports", async () => {
   expect(await import("./index")).toMatchInlineSnapshot(`
     Object {
       "baseCreditCardSandboxUrl": "https://sandbox.onramper.com",
+      "checkTransaction": [Function],
       "default": [Function],
       "finishCCTransaction": [Function],
       "moonpayUrlRegex": /https:\\\\/\\\\/\\(api\\|upload\\)\\.onramper\\.\\(dev\\|com\\)\\\\/\\(transaction\\\\/\\)\\?Moonpay\\.\\*/,

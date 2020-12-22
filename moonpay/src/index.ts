@@ -2,6 +2,7 @@ import processStep from "./processStep";
 import { StepError } from "./errors";
 import processFileUpload from "./processFileUpload";
 import finishCCTransaction from "./finishCCTransaction";
+import checkTransaction from "./checkTransaction";
 import { baseCreditCardSandboxUrl } from "./constants";
 
 const text = () => Promise.resolve("Unused");
@@ -34,7 +35,12 @@ async function isBrave(): Promise<boolean> {
 
 const moonpayUrlRegex = /https:\/\/(api|upload).onramper.(dev|com)\/(transaction\/)?Moonpay.*/;
 
-export { finishCCTransaction, baseCreditCardSandboxUrl, moonpayUrlRegex };
+export {
+  finishCCTransaction,
+  baseCreditCardSandboxUrl,
+  moonpayUrlRegex,
+  checkTransaction,
+};
 export default async (
   url: string,
   params: {
