@@ -34,6 +34,7 @@ export default async function (
   onramperApiKey: string,
   email: string,
   cryptocurrencyAddress: string,
+  cryptocurrencyAddressTag: string | undefined,
   country: string
 ): Promise<nextStep> {
   // TODO: Validate all new transaction data
@@ -92,6 +93,7 @@ export default async function (
     Timestamp: Date.now(),
     ...record,
     cryptocurrencyAddress,
+    cryptocurrencyAddressTag,
     country,
     apiKey: onramperApiKey,
   });

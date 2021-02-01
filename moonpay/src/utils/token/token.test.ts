@@ -114,3 +114,14 @@ test("integer body checks", () => {
     `"Parameter 'phoneNumber' found on json body is not an integer."`
   );
 });
+
+test("unrequired parameters are not body checked", () => {
+  expect(() =>
+    checkBodyParams({}, [
+      {
+        ...integerItem,
+        required: false,
+      },
+    ])
+  ).not.toThrow();
+});

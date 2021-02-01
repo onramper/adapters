@@ -110,7 +110,11 @@ export default function (
       cryptoCurrency,
       paymentMethod,
     ] = tokenValues;
-    checkBodyParams(body, [items.emailItem, items.cryptocurrencyAddress]);
+    checkBodyParams(body, [
+      items.emailItem,
+      items.cryptocurrencyAddress,
+      items.cryptocurrencyAddressTag,
+    ]);
     return registerEmail(
       id,
       amount,
@@ -120,6 +124,7 @@ export default function (
       onramperApiKey,
       body[items.emailItem.name],
       body[items.cryptocurrencyAddress.name],
+      body[items.cryptocurrencyAddressTag.name],
       country
     );
   }

@@ -18,6 +18,7 @@ test("transaction process works properly", async () => {
       "pk_prod_MOCK",
       "test@test.com",
       "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+      undefined,
       "es"
     )
   ).url;

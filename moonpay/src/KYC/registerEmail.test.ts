@@ -17,6 +17,7 @@ function call(
     "pk_test_MOCK",
     "wassup@sup.com",
     address,
+    "123",
     country
   );
 }
@@ -37,6 +38,7 @@ test("snapshot db state", async () => {
         "country": "es",
         "cryptoCurrency": "BTC",
         "cryptocurrencyAddress": "1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2",
+        "cryptocurrencyAddressTag": "123",
         "extraFees": 30,
         "fiatAmount": 100,
         "fiatCurrency": "EUR",

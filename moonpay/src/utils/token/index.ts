@@ -38,8 +38,15 @@ function checkInteger(num: any, errorMessage: string, fieldName: string) {
   }
 }
 
+interface RequiredItem {
+  required: undefined | boolean;
+}
+
 export function checkBodyParams(body: any, keys: stepDataItems) {
   keys.forEach((bodyKey) => {
+    if ((bodyKey as RequiredItem).required === false) {
+      return;
+    }
     const bodyKeyName = bodyKey.name;
     const bodyValue = body[bodyKeyName];
     if (bodyValue === undefined) {

@@ -26,6 +26,7 @@ export default async function (
         extraFeePercentage: creationTx.extraFees,
         areFeesIncluded: true,
         walletAddress: creationTx.cryptocurrencyAddress,
+        walletAddressTag: creationTx.cryptocurrencyAddressTag,
         baseCurrencyCode: creationTx.fiatCurrency.toLowerCase(),
         currencyCode: creationTx.cryptoCurrency.toLowerCase(),
         returnUrl: `${baseCreditCardSandboxUrl}/finished.html?txId=${txId}`,

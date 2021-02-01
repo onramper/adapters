@@ -10,6 +10,7 @@ export interface creationTxType {
   fiatAmount: number;
   paymentMethod: string;
   cryptocurrencyAddress: string;
+  cryptocurrencyAddressTag?: string;
   country: string;
   apiKey: string;
   extraFees: number;

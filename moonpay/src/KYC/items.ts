@@ -138,3 +138,10 @@ export const creditCardTokenId: stepItem = {
   name: "ccTokenId",
   humanName: "Credit Card Token Id",
 };
+
+export const cryptocurrencyAddressTag: stepItem = {
+  type: "string",
+  name: "cryptocurrencyAddressTag",
+  humanName: "Cryptocurrency address tag",
+  required: false,
+};
