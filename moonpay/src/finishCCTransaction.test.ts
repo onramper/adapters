@@ -35,10 +35,11 @@ test("Returns descriptive error when transaction doesn't exist", async () => {
 
 test("If 3D secure is not required the response marks the transaction as completed", async () => {
   await createAllMockTxs("123");
-  setFetchReturn('{"status": "completed"}');
+  setFetchReturn('{"status": "completed", "id":"jsadhjsahdkahk"}');
   expect(await finishCCTransaction("123", "mock-cc-token"))
     .toMatchInlineSnapshot(`
     Object {
+      "trackingUrl": "https://buy.moonpay.com/transaction_receipt?transactionId=jsadhjsahdkahk",
       "type": "completed",
     }
   `);
