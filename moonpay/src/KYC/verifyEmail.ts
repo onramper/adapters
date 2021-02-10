@@ -6,7 +6,7 @@ import {
   baseAPIUrl,
 } from "../constants";
 import { verifyEmailAPIResponse } from "./api";
-import { StepError, ApiError } from "../errors";
+import { StepError, ApiError, FetchError } from "../errors";
 import { encodeToken } from "../utils/token";
 import { emailVerifiedTx } from "./dynamoTxs";
 import ddb from "../utils/dynamodb";
@@ -83,5 +83,16 @@ export default async function (
       data: requiredData,
     };
   }
-  return getNextKYCStepFromTxIdAndToken(id, token);
+  try {
+    const nextKYCStep = await getNextKYCStepFromTxIdAndToken(id, token);
+    return nextKYCStep;
+  } catch (e) {
+    if (e instanceof FetchError && e.errorObject.type === "UnauthorizedError") {
+      throw new StepError(
+        "This browser's cookie policy is not compatible with Moonpay, please use a different browser",
+        null
+      );
+    }
+    throw e;
+  }
 }
