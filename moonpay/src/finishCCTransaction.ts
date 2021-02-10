@@ -60,6 +60,7 @@ export default async function (
     if (moonpayTx.status === "completed" || moonpayTx.status === "pending") {
       return {
         type: "completed",
+        trackingUrl: `https://buy.moonpay.com/transaction_receipt?transactionId=${moonpayTx.id}`,
       };
     }
     throw new StepError(
