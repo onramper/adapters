@@ -3,6 +3,7 @@ import {
   supportedCryptoOutsideUS,
   USsupportedCrypto,
 } from "../../moonpayCountryData";
+import { InternalError } from "../../errors";
 
 test("all types of BTC addresses are deemed as valid", () => {
   // P2PKH
@@ -30,10 +31,17 @@ test("ETH addresses validation works", () => {
   expect(validateAddress("wrong", "ETH")).toBe(false);
 });
 
-test("Error is thrown when an unknown currency is encountered", () => {
-  expect(() => validateAddress("", "UWU")).toThrowErrorMatchingInlineSnapshot(
-    `"Cryptocurrency not supported"`
-  );
+jest.mock("../../errors/");
+test("Error is thrown when an unknown currency is encountered, but address is deemed as valid", () => {
+  expect(validateAddress("", "UWU")).toBe(true);
+  expect(((InternalError as unknown) as jest.Mock).mock.calls)
+    .toMatchInlineSnapshot(`
+    Array [
+      Array [
+        "The moonpay adapter received a request to validate an address from cryptocurrency UWU but it can't find a proper validator for it",
+      ],
+    ]
+  `);
 });
 
 test("all the different currencies supported by Onramper are covered", () => {

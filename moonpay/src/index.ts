@@ -33,7 +33,7 @@ async function isBrave(): Promise<boolean> {
   );
 }
 
-const moonpayUrlRegex = /https:\/\/(api|upload).onramper.(dev|com)\/(transaction\/)?Moonpay.*/;
+const moonpayUrlRegex = /https:\/\/(upload\.)?(staging\.)?onramper\.tech\/(transaction\/)?Moonpay.*/;
 
 export {
   finishCCTransaction,
@@ -68,9 +68,7 @@ export default async (
         processFileUpload(url, params.body, onramperApiKey)
       );
     }
-    const [step, token] = url
-      .substr("https://api.onramper.dev/transaction/Moonpay/".length)
-      .split("/");
+    const [step, token] = new URL(url).pathname.split("/").splice(3);
     const parsedBody = JSON.parse(params.body);
     return successResponse(
       await processStep(step, token, parsedBody, onramperApiKey, "es") // TODO: Pass the country retrieved from params or /gateways

@@ -13,8 +13,8 @@ export const acceptedContentTypes = [
 ];
 const domain =
   window.origin === "https://widget.onramper.dev"
-    ? "onramper.dev"
-    : "onramper.com";
+    ? "staging.onramper.tech"
+    : "onramper.tech";
 export const baseCreditCardSandboxUrl = `https://sandbox.${domain}`;
-export const baseAPIUrl = `https://api.${domain}`;
+export const baseAPIUrl = `https://${domain}`;
 export const baseUploadsUrl = `https://upload.${domain}`;

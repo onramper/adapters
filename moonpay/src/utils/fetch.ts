@@ -6,7 +6,11 @@ export default function (
 ): Promise<Response> {
   return fetch(url, init).then(async (res) => {
     if (!res.ok) {
-      throw new FetchError(await res.json());
+      try {
+        throw new FetchError(await res.json());
+      } catch (e) {
+        throw new FetchError(await res.text());
+      }
     } else {
       return res;
     }

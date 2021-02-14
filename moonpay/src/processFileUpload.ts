@@ -9,21 +9,14 @@ import processStep from "./processStep";
 import { encodeToken } from "./utils/token";
 import { StepError } from "./errors";
 import { nextStep } from "./utils/types";
-
-export type queryStringValues = {
-  gatewayIdentifier: string;
-  documentType: string;
-  txId: string;
-  alpha3Country: string;
-  token: string;
-  side: string;
-};
+import fetch from "./utils/fetch";
 
 export default async function (
   url: string,
   file: File,
   onramperApiKey: string
 ): Promise<nextStep> {
+  const urlPath = new URL(url).pathname.substr(1);
   const [
     gatewayIdentifier,
     documentType,
@@ -31,7 +24,7 @@ export default async function (
     alpha3Country,
     token,
     side,
-  ] = url.substr("https://upload.onramper.com/".length).split("/");
+  ] = urlPath.split("/");
   const contentType = file.type;
   if (!acceptedContentTypes.includes(contentType)) {
     throw new StepError(
