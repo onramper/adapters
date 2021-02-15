@@ -78,7 +78,7 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
   expect(lowAmount).toMatchInlineSnapshot(`
     Object {
       "type": "iframe",
-      "url": "https://sandbox.onramper.tech?customerId=undefined&customerAddress=eyJjb3VudHJ5IjoiRVNQIn0=&transactionId=123",
+      "url": "https://moonpay.sandbox.onramper.tech?customerId=undefined&customerAddress=eyJjb3VudHJ5IjoiRVNQIn0=&transactionId=123",
     }
   `);
 });

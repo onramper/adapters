@@ -15,6 +15,6 @@ const domain =
   window.origin === "https://widget.onramper.dev"
     ? "staging.onramper.tech"
     : "onramper.tech";
-export const baseCreditCardSandboxUrl = `https://sandbox.${domain}`;
+export const baseCreditCardSandboxUrl = `https://moonpay.sandbox.${domain}`;
 export const baseAPIUrl = `https://${domain}`;
 export const baseUploadsUrl = `https://upload.${domain}`;
