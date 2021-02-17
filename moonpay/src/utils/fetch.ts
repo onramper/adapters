@@ -6,11 +6,13 @@ export default function (
 ): Promise<Response> {
   return fetch(url, init).then(async (res) => {
     if (!res.ok) {
+      let error: any;
       try {
-        throw new FetchError(await res.json());
+        error = await res.json();
       } catch (e) {
-        throw new FetchError(await res.text());
+        error = await res.text();
       }
+      throw new FetchError(error);
     } else {
       return res;
     }

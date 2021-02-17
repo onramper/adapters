@@ -19,6 +19,12 @@ export const fiatData = {
     name: "Bulgarian Lev",
     id: "4372afed-961e-4c1c-9a8c-e922b2cb0ca5",
   },
+  BRL: {
+    min: 130,
+    max: 65000,
+    name: "Brazilian Real",
+    id: "7d189686-5b3a-4bee-aef1-725e9826ce66",
+  },
   CAD: {
     min: 30,
     max: 16000,
@@ -103,11 +109,35 @@ export const fiatData = {
     name: "Israeli New Shekel",
     id: "9a15ddd9-eed5-42b3-aae3-7589ee736985",
   },
+  JOD: {
+    min: 15,
+    max: 8000,
+    name: "Jordanian Dinar",
+    id: "15173b02-e6d6-4776-86d7-05fb16c563e0",
+  },
+  JPY: {
+    min: 2500,
+    max: 1250000,
+    name: "Japanese Yen",
+    id: "b955eaa4-8618-402e-99d9-3ec4f479e608",
+  },
   KES: {
     min: 2500,
     max: 1250000,
     name: "Kenyan Shilling",
     id: "33c920d1-bdf0-42f6-aae1-397b92a459c5",
+  },
+  KRW: {
+    min: 25000,
+    max: 12000000,
+    name: "South Korean Won",
+    id: "ab62cccc-7d7d-41df-9298-2828fd84959d",
+  },
+  KWD: {
+    min: 10,
+    max: 3500,
+    name: "Kuwaiti Dinar",
+    id: "9e656712-f1b2-4ae6-bb94-724e0384b288",
   },
   LKR: {
     min: 4300,
@@ -151,6 +181,12 @@ export const fiatData = {
     name: "New Zealand Dollar",
     id: "1c9beb30-cabb-40d5-aa28-f2ae703a42c0",
   },
+  OMR: {
+    min: 10,
+    max: 4300,
+    name: "Omani Rial",
+    id: "b8152935-cfeb-4e64-847e-2c29d888ebc9",
+  },
   PEN: {
     min: 80,
     max: 40000,
@@ -176,7 +212,7 @@ export const fiatData = {
     id: "1fecf3b1-7743-4b2e-89a7-7e32e6c64d13",
   },
   RUB: {
-    min: 1500,
+    min: 2000,
     max: 830000,
     name: "Russian Ruble",
     id: "b41ce2e4-383f-44d0-9cbe-d43a19f9671a",
@@ -200,7 +236,7 @@ export const fiatData = {
     id: "b0eaa8d9-b197-4be1-8703-c0d42919bf57",
   },
   TRY: {
-    min: 150,
+    min: 200,
     max: 80000,
     name: "Turkish Lira",
     id: "d3c98192-a872-4958-bc91-7a8434acc1d1",
@@ -217,6 +253,12 @@ export const fiatData = {
     name: "US Dollar",
     id: "edd81f1f-f735-4692-b410-6def107f17d2",
   },
+  VND: {
+    min: 550000,
+    max: 250000000,
+    name: "Vietnamese Dong",
+    id: "0c6284be-f5e0-4f27-9aae-ea6aa6bb42e2",
+  },
   ZAR: {
     min: 400,
     max: 195000,
@@ -224,38 +266,6 @@ export const fiatData = {
     id: "863cd8f3-e5d6-4ae8-b520-9cbb0e7713ad",
   },
 } as { [fiat: string]: { max: number; min: number; name: string; id: string } };
-
-// See https://support.moonpay.io/hc/en-gb/articles/360009279877-Who-can-use-MoonPay-
-export const unsupportedCountries = [
-  "al",
-  "bs",
-  "bd",
-  "bb",
-  "bo",
-  "bw",
-  "kh",
-  "cn",
-  "cu",
-  "ec",
-  "gh",
-  "is",
-  "ir",
-  "jm",
-  "mu",
-  "mn",
-  "mm",
-  "ni",
-  "kp",
-  "pk",
-  "pa",
-  "ss",
-  "sd",
-  "sy",
-  "ug",
-  "ve",
-  "ye",
-  "zw",
-];
 
 // Also taken from https://support.moonpay.io/hc/en-gb/articles/360009279877-Who-can-use-MoonPay-
 export const unsupportedUSAStates = [
