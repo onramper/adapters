@@ -2,7 +2,7 @@ import { moonpayBaseAPI, baseCreditCardSandboxUrl } from "./constants";
 import { nextStep } from "./utils/types";
 import fetch from "./utils/fetch";
 import ddb from "./utils/dynamodb";
-import roundUp from "./utils/roundUp"
+import roundUp from "./utils/roundUp";
 import { getCreationTx, getTxAuthToken } from "./KYC/dynamoTxs";
 import { StepError, FetchError } from "./errors";
 import sendWaypoint from "./sendWaypoint";
