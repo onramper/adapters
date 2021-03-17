@@ -2,6 +2,7 @@ import { moonpayBaseAPI } from "./constants";
 import { nextStep } from "./utils/types";
 import fetch from "./utils/fetch";
 import ddb from "./utils/dynamodb";
+import roundUp from "./utils/roundUp";
 import { getCreationTx } from "./KYC/dynamoTxs";
 import { StepError } from "./errors";
 
@@ -117,7 +118,7 @@ export default async function (
       method: "POST",
       ...commonAPIParams,
       body: JSON.stringify({
-        baseCurrencyAmount: creationTx.fiatAmount,
+        baseCurrencyAmount: roundUp(creationTx.fiatAmount, 2),
         extraFeePercentage: creationTx.extraFees,
         areFeesIncluded: true,
         walletAddress: creationTx.cryptocurrencyAddress,
