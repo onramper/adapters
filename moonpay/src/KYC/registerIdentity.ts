@@ -99,6 +99,16 @@ export default async function (
       );
     }
   }
+  else if (country === "CAD") {
+    if (
+      state === undefined ||
+      typeof state !== "string" ||
+      state.length === 0
+    ) {
+      throw new StepError("Please, fill a valid CAD state.", "state");
+    }
+    customerData.address.state = state.toUpperCase();
+  }
   // Track customer actions
   ddb.put({
     PK: `tx#${id}`,
