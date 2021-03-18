@@ -98,14 +98,13 @@ export default async function (
         null
       );
     }
-  }
-  else if (country === "CAD") {
+  } else if (country === "CAN") {
     if (
       state === undefined ||
       typeof state !== "string" ||
       state.length === 0
     ) {
-      throw new StepError("Please, fill a valid CAD state.", "state");
+      throw new StepError("Please, fill a valid CAN state.", "state");
     }
     customerData.address.state = state.toUpperCase();
   }
