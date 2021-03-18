@@ -68,10 +68,18 @@ export default async (
         processFileUpload(url, params.body, onramperApiKey)
       );
     }
-    const [step, token] = new URL(url).pathname.split("/").splice(3);
+    const urlObj = new URL(url);
+    const [step, token] = urlObj.pathname.split("/").splice(3);
+    const country = urlObj.searchParams.get("country");
     const parsedBody = JSON.parse(params.body);
     return successResponse(
-      await processStep(step, token, parsedBody, onramperApiKey, "es") // TODO: Pass the country retrieved from params or /gateways
+      await processStep(
+        step,
+        token,
+        parsedBody,
+        onramperApiKey,
+        country || "es"
+      ) // TODO: Pass the country retrieved from params or /gateways
     );
   } catch (e) {
     if (e instanceof StepError) {

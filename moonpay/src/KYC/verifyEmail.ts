@@ -19,7 +19,7 @@ export default async function (
   email: string,
   code: string,
   onramperApiKey: string,
-  country: string
+  _: string // country: string
 ): Promise<nextStep> {
   let res: verifyEmailAPIResponse;
   try {
@@ -70,11 +70,12 @@ export default async function (
       items.townItem,
       items.postCodeItem,
       items.countryItem,
+      items.optionalStateItem,
     ];
     requiredData.push(items.dateOfBirthItem);
-    if (country === "us") {
+    /* if (country === "us") { // TODO: Remove
       requiredData.push(items.optionalStateItem);
-    }
+    } */
     return {
       type: "form",
       url: `${baseAPIUrl}/transaction/${identifier}/identity/${encodeToken([
