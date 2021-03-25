@@ -51,7 +51,7 @@ export default async function (
       credentials: "include",
       body: JSON.stringify({
         baseCurrencyAmount: roundUp(creationTx.fiatAmount, 2),
-        networkFeeAmount: networkFeeRequest.data.networkFeeEstimate,
+        networkFeeAmount: networkFeeRequest.data.networkFeeEstimate.fee,
         extraFeePercentage: creationTx.extraFees,
         areFeesIncluded: true,
         walletAddress: creationTx.cryptocurrencyAddress,
