@@ -35,6 +35,9 @@ test("Returns descriptive error when transaction doesn't exist", async () => {
 
 test("If 3D secure is not required the response marks the transaction as completed", async () => {
   await createAllMockTxs("123");
+  setFetchReturn(
+    '{"data":{"networkFeeEstimate":{"fee":0.52,"__typename":"NetworkFeeEstimate"}}}'
+  );
   setFetchReturn('{"status": "completed", "id":"jsadhjsahdkahk"}');
   expect(await finishCCTransaction("123", "mock-cc-token"))
     .toMatchInlineSnapshot(`

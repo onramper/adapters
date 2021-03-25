@@ -8,6 +8,15 @@ import { StepError, FetchError } from "./errors";
 import sendWaypoint from "./sendWaypoint";
 import TransactionResponse from "./TransactionResponse";
 
+interface NetworkFeeEstimateResponse {
+  data: {
+    networkFeeEstimate: {
+      fee: number;
+      __typename: "NetworkFeeEstimate";
+    };
+  };
+}
+
 export default async function (
   txId: string,
   ccTokenId: string
@@ -15,6 +24,24 @@ export default async function (
   try {
     const authTx = getTxAuthToken(txId);
     const creationTx = await getCreationTx(txId);
+    const networkFeeRequest = (await fetch(`https://api.moonpay.com/graphql`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": (await authTx).csrfToken,
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        operationName: "networkFeeEstimate",
+        variables: {
+          baseCurrencyCode: creationTx.fiatCurrency.toLowerCase(),
+          quoteCurrencyCode: creationTx.cryptoCurrency.toLowerCase(),
+          walletAddress: creationTx.cryptocurrencyAddress,
+        },
+        query:
+          "query networkFeeEstimate($baseCurrencyCode: String!, $quoteCurrencyCode: String!, $walletAddress: String!) {\n  networkFeeEstimate(baseCurrencyCode: $baseCurrencyCode, quoteCurrencyCode: $quoteCurrencyCode, walletAddress: $walletAddress) {\n    fee\n    __typename\n  }\n}\n",
+      }),
+    }).then((res) => res.json())) as NetworkFeeEstimateResponse;
     const moonpayTx = (await fetch(`${moonpayBaseAPI}/transactions`, {
       method: "POST",
       headers: {
@@ -24,6 +51,7 @@ export default async function (
       credentials: "include",
       body: JSON.stringify({
         baseCurrencyAmount: roundUp(creationTx.fiatAmount, 2),
+        networkFeeAmount: networkFeeRequest.data.networkFeeEstimate,
         extraFeePercentage: creationTx.extraFees,
         areFeesIncluded: true,
         walletAddress: creationTx.cryptocurrencyAddress,
@@ -80,6 +108,7 @@ export default async function (
     } else if (e instanceof StepError) {
       throw e;
     } else {
+      console.log(e);
       throw new StepError(`Transaction failed for unexpected reasons.`, null);
     }
   }
