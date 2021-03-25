@@ -24,7 +24,7 @@ export default async function (
   try {
     const authTx = getTxAuthToken(txId);
     const creationTx = await getCreationTx(txId);
-    const networkFeeRequest = (await fetch(`https://api.moonpay.com/graphql`, {
+    const networkFeeRequest = (await fetch(`https://api.moonpay.io/graphql`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
