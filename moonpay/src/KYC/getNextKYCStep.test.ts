@@ -14,7 +14,8 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
       fiatAmount: 60,
     } as any,
     "sumAuthToken",
-    { address: { country: "ESP" } } as any
+    { address: { country: "ESP" } } as any,
+    "pk_test_aaaaa"
   );
   expect(highAmount.type).toBe("pickOne");
   expect(highAmount).toMatchInlineSnapshot(`
@@ -72,13 +73,14 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
       fiatAmount: 40,
     } as any,
     "",
-    { address: { country: "ESP" } } as any
+    { address: { country: "ESP" } } as any,
+    "pk_test_aaaaaa"
   );
   expect(lowAmount.type).toBe("iframe");
   expect(lowAmount).toMatchInlineSnapshot(`
     Object {
       "type": "iframe",
-      "url": "https://moonpay.sandbox.onramper.tech?customerId=undefined&customerAddress=eyJjb3VudHJ5IjoiRVNQIn0=&transactionId=123",
+      "url": "https://moonpay.sandbox.onramper.tech?customerId=undefined&customerAddress=eyJjb3VudHJ5IjoiRVNQIn0=&transactionId=123&apiKey=pk_test_aaaaaa",
     }
   `);
 });

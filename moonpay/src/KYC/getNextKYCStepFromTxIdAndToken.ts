@@ -4,7 +4,8 @@ import getNextKYCStep from "./getNextKYCStep";
 
 export default async function (
   id: string,
-  token: string
+  token: string,
+  onramperApiKey: string
 ): ReturnType<typeof getNextKYCStep> {
   const creationTx = await getCreationTx(id);
   // TODO: In most of the times where this is called,
@@ -12,5 +13,5 @@ export default async function (
   // the customer data in a previous call and pull it from dynamo here
   // thus making everything faster by removing a network call
   const customerData = await setFiatCurrency(token, creationTx.fiatCurrency);
-  return getNextKYCStep(creationTx, token, customerData);
+  return getNextKYCStep(creationTx, token, customerData, onramperApiKey);
 }

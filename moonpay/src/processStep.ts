@@ -177,7 +177,7 @@ export default function (
       throw new StepError("URL is incorrect.", null);
     }
     const [id, csrfToken] = tokenValues;
-    return getNextKYCStepFromTxIdAndToken(id, csrfToken);
+    return getNextKYCStepFromTxIdAndToken(id, csrfToken, onramperApiKey);
   }
   if (step === "registerPhone") {
     if (!checkTokenTypes<[string, string]>(tokenValues, ["", ""])) {
@@ -198,7 +198,12 @@ export default function (
     }
     const [id, csrfToken] = tokenValues;
     checkBodyParams(body, [items.verifyPhoneCodeItem]);
-    return verifyPhone(id, csrfToken, body[items.verifyPhoneCodeItem.name]);
+    return verifyPhone(
+      id,
+      csrfToken,
+      body[items.verifyPhoneCodeItem.name],
+      onramperApiKey
+    );
   }
   if (step === "registerBank") {
     if (!checkTokenTypes<[string, string, string]>(tokenValues, ["", "", ""])) {

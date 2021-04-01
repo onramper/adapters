@@ -132,7 +132,8 @@ export default async function (
     return getNextKYCStep(
       await creationTx,
       (await tokenTx).csrfToken,
-      updatedCustomerData
+      updatedCustomerData,
+      onramperApiKey
     );
   } catch (e) {
     if (e instanceof FetchError) {

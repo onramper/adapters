@@ -8,7 +8,8 @@ import getNextKYCStepFromTxIdAndToken from "./getNextKYCStepFromTxIdAndToken";
 export default async function (
   id: string,
   token: string,
-  phoneCode: string
+  phoneCode: string,
+  onramperApiKey: string
 ): Promise<nextStep> {
   try {
     const response = await fetch(
@@ -34,5 +35,5 @@ export default async function (
       verifyPhoneCodeItem.name
     );
   }
-  return getNextKYCStepFromTxIdAndToken(id, token);
+  return getNextKYCStepFromTxIdAndToken(id, token, onramperApiKey);
 }

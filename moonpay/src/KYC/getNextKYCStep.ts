@@ -35,7 +35,8 @@ function getAlpha3Country(alpha3Country: string | null): string {
 export default async function (
   creationTx: creationTxType,
   token: string,
-  customerData: customerAPIResponse
+  customerData: customerAPIResponse,
+  onramperApiKey: string
 ): Promise<nextStep> {
   // TODO: This could be optimized by storing the result of limits between calls and predicting the changes to it based on our actions.
   // Essentially only the first call to the /limits endpoint is needed
@@ -74,7 +75,7 @@ export default async function (
           customerData.id
         }&customerAddress=${encodeJson(
           customerData.address
-        )}&transactionId=${txId}`,
+        )}&transactionId=${txId}&apiKey=${onramperApiKey}`,
       };
     }
     // Request bank data

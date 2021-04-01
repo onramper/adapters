@@ -85,7 +85,11 @@ export default async function (
     };
   }
   try {
-    const nextKYCStep = await getNextKYCStepFromTxIdAndToken(id, token);
+    const nextKYCStep = await getNextKYCStepFromTxIdAndToken(
+      id,
+      token,
+      onramperApiKey
+    );
     return nextKYCStep;
   } catch (e) {
     if (e instanceof FetchError && e.errorObject.type === "UnauthorizedError") {
