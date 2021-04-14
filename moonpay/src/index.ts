@@ -35,11 +35,24 @@ async function isBrave(): Promise<boolean> {
 
 const moonpayUrlRegex = /https:\/\/(upload\.)?(staging\.)?onramper\.tech\/(transaction\/)?Moonpay.*/;
 
+type PartnerContext = { [key: string]: any } | undefined;
+let pContext: PartnerContext;
+
+const setPartnerContext = (partnerContext: PartnerContext) => {
+  pContext = partnerContext;
+};
+
+const getPartnerContext = () => {
+  return pContext;
+};
+
 export {
   finishCCTransaction,
   baseCreditCardSandboxUrl,
   moonpayUrlRegex,
   checkTransaction,
+  setPartnerContext,
+  getPartnerContext,
 };
 export default async (
   url: string,

@@ -12,6 +12,7 @@ import * as items from "./KYC/items";
 import getNextKYCStepFromTxIdAndToken from "./KYC/getNextKYCStepFromTxIdAndToken";
 import registerBank from "./registerBank";
 import sendWaypoint from "./sendWaypoint";
+import { setPartnerContext } from "./index";
 
 // Separated cause it's too bulky
 function processIdentityState(
@@ -92,6 +93,7 @@ export default function (
     sendWaypoint(tokenValues[0].toString(), onramperApiKey, step, {});
   }
   if (step === "email") {
+    setPartnerContext(body.partnerContext);
     if (
       !checkTokenTypes<[string, number, string, string, string]>(tokenValues, [
         "",

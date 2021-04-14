@@ -7,6 +7,7 @@ import { getCreationTx, getTxAuthToken } from "./KYC/dynamoTxs";
 import { StepError, FetchError } from "./errors";
 import sendWaypoint from "./sendWaypoint";
 import TransactionResponse from "./TransactionResponse";
+import { getPartnerContext } from "./index";
 
 interface NetworkFeeEstimateResponse {
   data: {
@@ -42,6 +43,11 @@ export default async function (
           "query networkFeeEstimate($baseCurrencyCode: String!, $quoteCurrencyCode: String!, $walletAddress: String!) {\n  networkFeeEstimate(baseCurrencyCode: $baseCurrencyCode, quoteCurrencyCode: $quoteCurrencyCode, walletAddress: $walletAddress) {\n    fee\n    __typename\n  }\n}\n",
       }),
     }).then((res) => res.json())) as NetworkFeeEstimateResponse;
+
+    const partnerContext = getPartnerContext()
+      ? `;${JSON.stringify(getPartnerContext())}`
+      : "";
+
     const moonpayTx = (await fetch(`${moonpayBaseAPI}/transactions`, {
       method: "POST",
       headers: {
@@ -60,7 +66,7 @@ export default async function (
         currencyCode: creationTx.cryptoCurrency.toLowerCase(),
         returnUrl: `${baseCreditCardSandboxUrl}/finished.html?txId=${txId}`,
         tokenId: ccTokenId,
-        externalTransactionId: `${txId};${creationTx.apiKey}`,
+        externalTransactionId: `${txId};${creationTx.apiKey}${partnerContext}`, // separator ';' added in partnerContext string
       }),
     }).then((res) => res.json())) as TransactionResponse;
     ddb.put({
