@@ -35,11 +35,11 @@ async function isBrave(): Promise<boolean> {
 
 const moonpayUrlRegex = /https:\/\/(upload\.)?(staging\.)?onramper\.tech\/(transaction\/)?Moonpay.*/;
 
-type PartnerContext = { [key: string]: any } | undefined;
+type PartnerContext = { [key: string]: any } | "";
 let pContext: PartnerContext;
 
 const setPartnerContext = (partnerContext: PartnerContext) => {
-  pContext = partnerContext;
+  pContext = partnerContext ?? "";
 };
 
 const getPartnerContext = () => {
