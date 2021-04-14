@@ -19,7 +19,9 @@ test("simple type snapshot of all exports", async () => {
       "checkTransaction": [Function],
       "default": [Function],
       "finishCCTransaction": [Function],
+      "getPartnerContext": [Function],
       "moonpayUrlRegex": /https:\\\\/\\\\/\\(upload\\\\\\.\\)\\?\\(staging\\\\\\.\\)\\?onramper\\\\\\.tech\\\\/\\(transaction\\\\/\\)\\?Moonpay\\.\\*/,
+      "setPartnerContext": [Function],
     }
   `);
 });
