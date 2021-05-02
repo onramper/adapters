@@ -3,12 +3,15 @@ It works like a fetch mock:
 ```ts
 import processMoonpayStep, { moonpayUrlRegex } from '@onramper/moonpay-adapter'
 
+const method = step.type === 'file' ? 'PUT' : 'POST'
 const body = step.type === 'file' ? data as File : JSON.stringify(data)
+
+const nextStepType = step.url.split('/')[5]
 let nextStep: FetchResponse;
-if(moonpayUrlRegex.test(step.url)){
-    nextStep = await processMoonpayStep(step.url, body);
+if (isMoonpayStep(step.url) && nextStepType !== "iframe") {
+    nextStep = await processMoonpayStep(step.url, { method, headers, body });
 } else {
-    nextStep = await fetch(`${step.url}?${urlParams}`, { method, body })
+    nextStep = await fetch(step.url, { method, headers, body })
 }
 return processResponse(nextStep)
 ```
