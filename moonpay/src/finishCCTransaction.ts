@@ -45,7 +45,7 @@ export default async function (
     }).then((res) => res.json())) as NetworkFeeEstimateResponse;
 
     const partnerContext = getPartnerContext()
-      ? `;${JSON.stringify(getPartnerContext())}`
+      ? `${JSON.stringify(getPartnerContext())}`
       : "";
 
     const moonpayTx = (await fetch(`${moonpayBaseAPI}/transactions`, {
@@ -66,7 +66,7 @@ export default async function (
         currencyCode: creationTx.cryptoCurrency.toLowerCase(),
         returnUrl: `${baseCreditCardSandboxUrl}/finished.html?txId=${txId}`,
         tokenId: ccTokenId,
-        externalTransactionId: `${txId};${creationTx.apiKey}${partnerContext}`, // separator ';' added in partnerContext string
+        externalTransactionId: `${txId};${creationTx.apiKey};${partnerContext}`,
       }),
     }).then((res) => res.json())) as TransactionResponse;
     ddb.put({

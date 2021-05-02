@@ -117,7 +117,7 @@ export default async function (
     const creationTx = await getCreationTx(txId);
 
     const partnerContext = getPartnerContext()
-      ? `;${JSON.stringify(getPartnerContext())}`
+      ? `${JSON.stringify(getPartnerContext())}`
       : "";
 
     const txCreationResponse = (await fetch(`${moonpayBaseAPI}/transactions`, {
@@ -131,7 +131,7 @@ export default async function (
         baseCurrencyCode: bankInfo.currencyCode,
         currencyCode: creationTx.cryptoCurrency.toLowerCase(),
         bankAccountId: bankId,
-        externalTransactionId: `${txId};${creationTx.apiKey}${partnerContext}`, // separator ';' added in partnerContext string
+        externalTransactionId: `${txId};${creationTx.apiKey};${partnerContext}`, // separator ';' added in partnerContext string
       }),
     }).then((res) => res.json())) as CreateBankTransactionResponse;
     ddb.put({
