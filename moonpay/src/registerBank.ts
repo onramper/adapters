@@ -131,7 +131,7 @@ export default async function (
         baseCurrencyCode: bankInfo.currencyCode,
         currencyCode: creationTx.cryptoCurrency.toLowerCase(),
         bankAccountId: bankId,
-        externalTransactionId: `${txId};${creationTx.apiKey};${partnerContext}`, // separator ';' added in partnerContext string
+        externalTransactionId: `${txId};${creationTx.apiKey};${partnerContext}`,
       }),
     }).then((res) => res.json())) as CreateBankTransactionResponse;
     ddb.put({
