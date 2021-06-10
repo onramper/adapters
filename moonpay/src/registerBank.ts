@@ -6,6 +6,7 @@ import roundUp from "./utils/roundUp";
 import { getCreationTx } from "./KYC/dynamoTxs";
 import { StepError } from "./errors";
 import { getPartnerContext } from "./index";
+import { encodeToken } from "./utils/token";
 
 interface BankResponse {
   id: string;
@@ -131,7 +132,11 @@ export default async function (
         baseCurrencyCode: bankInfo.currencyCode,
         currencyCode: creationTx.cryptoCurrency.toLowerCase(),
         bankAccountId: bankId,
-        externalTransactionId: `${txId};${creationTx.apiKey};${partnerContext}`,
+        externalTransactionId: encodeToken([
+          txId,
+          creationTx.apiKey,
+          partnerContext,
+        ]),
       }),
     }).then((res) => res.json())) as CreateBankTransactionResponse;
     ddb.put({

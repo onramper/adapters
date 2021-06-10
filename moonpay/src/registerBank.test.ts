@@ -81,7 +81,7 @@ test("if bank has already been introduced use it's id [IBAN] + snapshot of reqs"
       Array [
         "https://api.moonpay.io/v3/transactions",
         Object {
-          "body": "{\\"baseCurrencyAmount\\":100,\\"extraFeePercentage\\":10,\\"areFeesIncluded\\":true,\\"walletAddress\\":\\"0xpleb\\",\\"baseCurrencyCode\\":\\"eur\\",\\"currencyCode\\":\\"btc\\",\\"bankAccountId\\":\\"74b38e1a-d636-4faa-909a-24e0beeb5b08\\",\\"externalTransactionId\\":\\"12345;pk_test_MOCK;\\"}",
+          "body": "{\\"baseCurrencyAmount\\":100,\\"extraFeePercentage\\":10,\\"areFeesIncluded\\":true,\\"walletAddress\\":\\"0xpleb\\",\\"baseCurrencyCode\\":\\"eur\\",\\"currencyCode\\":\\"btc\\",\\"bankAccountId\\":\\"74b38e1a-d636-4faa-909a-24e0beeb5b08\\",\\"externalTransactionId\\":\\"WyIxMjM0NSIsInBrX3Rlc3RfTU9DSyIsIiJd\\"}",
           "credentials": "include",
           "headers": Object {
             "Content-Type": "application/json",
@@ -159,7 +159,7 @@ test("if no banks are registered for this user, register a new one + snapshot of
       Array [
         "https://api.moonpay.io/v3/transactions",
         Object {
-          "body": "{\\"baseCurrencyAmount\\":100,\\"extraFeePercentage\\":10,\\"areFeesIncluded\\":true,\\"walletAddress\\":\\"0xpleb\\",\\"baseCurrencyCode\\":\\"eur\\",\\"currencyCode\\":\\"btc\\",\\"bankAccountId\\":\\"88888888-d636-4faa-909a-NEW-ID\\",\\"externalTransactionId\\":\\"12345;pk_test_MOCK;\\"}",
+          "body": "{\\"baseCurrencyAmount\\":100,\\"extraFeePercentage\\":10,\\"areFeesIncluded\\":true,\\"walletAddress\\":\\"0xpleb\\",\\"baseCurrencyCode\\":\\"eur\\",\\"currencyCode\\":\\"btc\\",\\"bankAccountId\\":\\"88888888-d636-4faa-909a-NEW-ID\\",\\"externalTransactionId\\":\\"WyIxMjM0NSIsInBrX3Rlc3RfTU9DSyIsIiJd\\"}",
           "credentials": "include",
           "headers": Object {
             "Content-Type": "application/json",
