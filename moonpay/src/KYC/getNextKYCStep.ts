@@ -1,3 +1,4 @@
+import { BrowserClient, Hub } from "@sentry/browser";
 import {
   moonpayBaseAPI,
   identifier,
@@ -15,6 +16,12 @@ import getDocumentHumanName from "../documents/getDocumentHumanName";
 import { creationTxType } from "./dynamoTxs";
 import { limitAPIResponse, customerAPIResponse } from "./api";
 import * as items from "./items";
+
+const sentryClient = new BrowserClient({
+  dsn: "https://283a138678d94cc295852f634d4cdd1c@o506512.ingest.sentry.io/5638949",
+  environment: process.env.STAGE
+});
+const sentryHub = new Hub(sentryClient);
 
 function selectLimit(
   limits: limitAPIResponse,
@@ -38,6 +45,9 @@ export default async function (
   customerData: customerAPIResponse,
   onramperApiKey: string
 ): Promise<nextStep> {
+  sentryHub.addBreadcrumb({ message: `creationtx`, data: creationTx })
+  sentryHub.addBreadcrumb({ message: `apikey`, data: { onramperApiKey } })
+  sentryHub.addBreadcrumb({ message: `customerData`, data: customerData })
   // TODO: This could be optimized by storing the result of limits between calls and predicting the changes to it based on our actions.
   // Essentially only the first call to the /limits endpoint is needed
   const limits = (await fetch(`${moonpayBaseAPI}/customers/me/limits`, {
@@ -71,11 +81,10 @@ export default async function (
     if (creationTx.paymentMethod === "creditCard") {
       return {
         type: "iframe",
-        url: `${baseCreditCardSandboxUrl}?customerId=${
-          customerData.id
-        }&customerAddress=${encodeJson(
-          customerData.address
-        )}&transactionId=${txId}&apiKey=${onramperApiKey}`,
+        url: `${baseCreditCardSandboxUrl}?customerId=${customerData.id
+          }&customerAddress=${encodeJson(
+            customerData.address
+          )}&transactionId=${txId}&apiKey=${onramperApiKey}`,
       };
     }
     // Request bank data
@@ -109,6 +118,8 @@ export default async function (
       (req) => req.completed === false
     )[0].identifier;
     if (nextKYCLevel === "phone_number_verification") {
+      sentryHub.addBreadcrumb({ message: `phone_number_verification`, data: limits })
+      sentryHub.addBreadcrumb({ message: `phone_number_verification`, data: customerData })
       // Get phone
       return {
         type: "form",
@@ -121,7 +132,8 @@ export default async function (
     if (nextKYCLevel === "document_verification") {
       const alpha3Country = getAlpha3Country(customerData.address.country);
       const possibleDocuments = requiredDocumentsAlpha3[alpha3Country];
-
+      sentryHub.addBreadcrumb({ message: `document_verification`, data: limits })
+      sentryHub.addBreadcrumb({ message: `document_verification`, data: customerData })
       return {
         type: "pickOne",
         options: possibleDocuments.map((docId) => {
@@ -141,6 +153,8 @@ export default async function (
       };
     }
     if (nextKYCLevel === "face_match_verification") {
+      sentryHub.addBreadcrumb({ message: `face_match_verification`, data: limits })
+      sentryHub.addBreadcrumb({ message: `face_match_verification`, data: customerData })
       const alpha3Country = getAlpha3Country(customerData.address.country);
       return {
         type: "file",
@@ -150,6 +164,8 @@ export default async function (
       };
     }
     if (nextKYCLevel === "address_verification") {
+      sentryHub.addBreadcrumb({ message: `address_verification`, data: limits })
+      sentryHub.addBreadcrumb({ message: `address_verification`, data: customerData })
       const alpha3Country = getAlpha3Country(customerData.address.country);
       return {
         type: "file",
@@ -161,10 +177,15 @@ export default async function (
       };
     }
     if (nextKYCLevel === "identity_verification") {
+      sentryHub.addBreadcrumb({ message: `identity_verification`, data: limits })
+      sentryHub.addBreadcrumb({ message: `identity_verification`, data: customerData })
+
       throw new InternalError(
         "It is impossible to reach this point without finishing identity verification."
       );
     } else {
+      sentryHub.addBreadcrumb({ message: `Debug KYC level Moonpay ${JSON.stringify(limits)}`, data: limits })
+      sentryHub.captureException(new Error('Debug KYC level Moonpay!'));
       throw new StepError(
         `Required KYC level is not supported by Onramper. Please, contact support@onramper.com providing the following information: Step: ${nextKYCLevel}. Tx id: ${txId}`,
         null

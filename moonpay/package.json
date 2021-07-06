@@ -4,7 +4,7 @@
     "type": "git",
     "url": "git+https://github.com/onramper/adapters.git"
   },
-  "version": "1.5.1",
+  "version": "1.5.2",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "license": "MIT",
@@ -32,6 +32,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
+    "@sentry/browser": "^6.8.0",
     "iso3166-alpha-converter": "^1.0.0",
     "scrypt-js": "^3.0.1"
   },
