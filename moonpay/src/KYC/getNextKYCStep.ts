@@ -166,7 +166,7 @@ export default async function (
       );
     } else {
       throw new StepError(
-        "Required KYC level is not supported by Onramper.",
+        `Required KYC level is not supported by Onramper. Please, contact support@onramper.com providing the following information: Step: ${nextKYCLevel}. Tx id: ${txId}`,
         null
       );
     }
