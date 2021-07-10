@@ -176,7 +176,7 @@ export default function (
     return processIdentityState(tokenValues, body, onramperApiKey);
   }
   if (step === "diligence_verification") {
-    return processDiligenceVerificationStep(tokenValues, body, onramperApiKey)
+    return processDiligenceVerificationStep(tokenValues, body, onramperApiKey);
   }
   if (step === "getNextKYCStep") {
     if (!checkTokenTypes<[string, string]>(tokenValues, ["", ""])) {

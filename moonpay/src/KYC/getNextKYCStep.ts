@@ -84,10 +84,11 @@ export default async function (
       return {
         type: "iframe",
         fullscreen: false,
-        url: `${baseCreditCardSandboxUrl}?customerId=${customerData.id
-          }&customerAddress=${encodeJson(
-            customerData.address
-          )}&transactionId=${txId}&apiKey=${onramperApiKey}`,
+        url: `${baseCreditCardSandboxUrl}?customerId=${
+          customerData.id
+        }&customerAddress=${encodeJson(
+          customerData.address
+        )}&transactionId=${txId}&apiKey=${onramperApiKey}`,
       };
     }
     // Request bank data
@@ -204,7 +205,7 @@ export default async function (
       };
     }
     if (nextKYCLevel === "customer_due_diligence_verification") {
-      return generateDiligenceVerificationStep(token)
+      return generateDiligenceVerificationStep(token);
     }
     if (nextKYCLevel === "identity_verification") {
       sentryHub.addBreadcrumb({

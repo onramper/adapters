@@ -147,150 +147,150 @@ export const cryptocurrencyAddressTag: stepItem = {
 };
 
 export const accountPurpose: stepItem = {
-  type: 'select',
-  name: 'accountPurpose',
-  humanName: 'How do you intend to use Moonpay?',
+  type: "select",
+  name: "accountPurpose",
+  humanName: "How do you intend to use Moonpay?",
   required: true,
   options: [
     {
-      value: 'Beginner',
-      humanName: 'Beginner seeking investment'
+      value: "Beginner",
+      humanName: "Beginner seeking investment",
     },
     {
-      value: 'Trading',
-      humanName: 'Trading'
+      value: "Trading",
+      humanName: "Trading",
     },
     {
-      value: 'Payments',
-      humanName: 'Making payments'
+      value: "Payments",
+      humanName: "Making payments",
     },
     {
-      value: 'Other',
-      humanName: 'Other'
+      value: "Other",
+      humanName: "Other",
     },
-  ]
+  ],
 };
 
 export const employmentStatus: stepItem = {
-  type: 'select',
-  name: 'employmentStatus',
-  humanName: 'What is your current employment status?',
+  type: "select",
+  name: "employmentStatus",
+  humanName: "What is your current employment status?",
   required: true,
   options: [
     {
-      value: 'Employed',
-      humanName: 'Employed'
+      value: "Employed",
+      humanName: "Employed",
     },
     {
-      value: 'SelfEmployed',
-      humanName: 'Self Employed'
+      value: "SelfEmployed",
+      humanName: "Self Employed",
     },
     {
-      value: 'Student',
-      humanName: 'Student'
+      value: "Student",
+      humanName: "Student",
     },
     {
-      value: 'NotEmployed',
-      humanName: 'Not Employed'
+      value: "NotEmployed",
+      humanName: "Not Employed",
     },
     {
-      value: 'Retired',
-      humanName: 'Retired'
-    }
-  ]
-}
+      value: "Retired",
+      humanName: "Retired",
+    },
+  ],
+};
 
 export const grossAnnualIncome: stepItem = {
-  type: 'select',
-  name: 'grossAnnualIncome',
-  humanName: 'What is your yearly gross income in EUR?',
+  type: "select",
+  name: "grossAnnualIncome",
+  humanName: "What is your yearly gross income in EUR?",
   required: true,
   options: [
     {
-      value: 'LessThan10k',
-      humanName: '9,999 EUR or less'
+      value: "LessThan10k",
+      humanName: "9,999 EUR or less",
     },
     {
-      value: 'MoreThan10k',
-      humanName: '10,000 - 19,999 EUR'
+      value: "MoreThan10k",
+      humanName: "10,000 - 19,999 EUR",
     },
     {
-      value: 'MoreThan20k',
-      humanName: '20,000 - 39,999 EUR'
+      value: "MoreThan20k",
+      humanName: "20,000 - 39,999 EUR",
     },
     {
-      value: 'MoreThan40k',
-      humanName: '40,000 - 59,999 EUR'
+      value: "MoreThan40k",
+      humanName: "40,000 - 59,999 EUR",
     },
     {
-      value: 'MoreThan60k',
-      humanName: '60,000 - 79,999 EUR'
+      value: "MoreThan60k",
+      humanName: "60,000 - 79,999 EUR",
     },
     {
-      value: 'MoreThan80k',
-      humanName: '80,000 - 99,999 EUR'
+      value: "MoreThan80k",
+      humanName: "80,000 - 99,999 EUR",
     },
     {
-      value: 'MoreThan100k',
-      humanName: '100,000 EUR or more'
+      value: "MoreThan100k",
+      humanName: "100,000 EUR or more",
     },
-  ]
-}
+  ],
+};
 
 export const sourceOfFunds: stepItem = {
-  type: 'select',
-  name: 'sourceOfFunds',
-  humanName: 'What is the origin of funds?',
+  type: "select",
+  name: "sourceOfFunds",
+  humanName: "What is the origin of funds?",
   required: true,
   options: [
     {
-      value: 'Salary',
-      humanName: 'Salary (Personal income)'
+      value: "Salary",
+      humanName: "Salary (Personal income)",
     },
     {
-      value: 'Savings',
-      humanName: 'Savings'
+      value: "Savings",
+      humanName: "Savings",
     },
     {
-      value: 'Pension',
-      humanName: 'Pension'
+      value: "Pension",
+      humanName: "Pension",
     },
     {
-      value: 'Investments',
-      humanName: 'Income from investments'
+      value: "Investments",
+      humanName: "Income from investments",
     },
     {
-      value: 'Other',
-      humanName: 'Other'
+      value: "Other",
+      humanName: "Other",
     },
     {
-      value: 'Mining',
-      humanName: 'Mining'
-    }
-  ]
-}
+      value: "Mining",
+      humanName: "Mining",
+    },
+  ],
+};
 
 export const annualExpectedActivity: stepItem = {
-  type: 'select',
-  name: 'annualExpectedActivity',
-  humanName: 'What is your annual expected activity on Moonpay?',
+  type: "select",
+  name: "annualExpectedActivity",
+  humanName: "What is your annual expected activity on Moonpay?",
   required: true,
   options: [
     {
-      value: 'LessThan1k',
-      humanName: '999 EUR or less'
+      value: "LessThan1k",
+      humanName: "999 EUR or less",
     },
     {
-      value: 'MoreThan1k',
-      humanName: '1,000 - 9,999 EUR'
+      value: "MoreThan1k",
+      humanName: "1,000 - 9,999 EUR",
     },
     {
-      value: 'MoreThan10k',
-      humanName: '10,000 - 24,999 EUR'
+      value: "MoreThan10k",
+      humanName: "10,000 - 24,999 EUR",
     },
     {
-      value: 'MoreThan25k',
-      humanName: '25,000 EUR or more'
-    }
-  ]
-}
+      value: "MoreThan25k",
+      humanName: "25,000 EUR or more",
+    },
+  ],
+};
