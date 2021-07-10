@@ -80,6 +80,7 @@ export default async function (
       type: "form",
       url: `${baseAPIUrl}/transaction/${identifier}/identity/${encodeToken([
         id,
+        token
       ])}`,
       data: requiredData,
     };

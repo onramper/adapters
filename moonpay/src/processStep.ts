@@ -13,6 +13,7 @@ import getNextKYCStepFromTxIdAndToken from "./KYC/getNextKYCStepFromTxIdAndToken
 import registerBank from "./registerBank";
 import sendWaypoint from "./sendWaypoint";
 import { setPartnerContext } from "./index";
+import processDiligenceVerificationStep from "./KYC/processDiligenceVerificationStep";
 
 // Separated cause it's too bulky
 function processIdentityState(
@@ -173,6 +174,9 @@ export default function (
   }
   if (step === "identityState") {
     return processIdentityState(tokenValues, body, onramperApiKey);
+  }
+  if (step === "diligence_verification") {
+    return processDiligenceVerificationStep(tokenValues, body, onramperApiKey)
   }
   if (step === "getNextKYCStep") {
     if (!checkTokenTypes<[string, string]>(tokenValues, ["", ""])) {

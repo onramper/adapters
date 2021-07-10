@@ -19,9 +19,9 @@ export interface customerIdentityData {
 export interface limitAPIResponse {
   limits: {
     type:
-      | "buy_credit_debit_card"
-      | "buy_gbp_bank_transfer"
-      | "buy_sepa_bank_transfer";
+    | "buy_credit_debit_card"
+    | "buy_gbp_bank_transfer"
+    | "buy_sepa_bank_transfer";
     dailyLimit: number;
     dailyLimitRemaining: number;
     monthlyLimit: number;
@@ -32,11 +32,12 @@ export interface limitAPIResponse {
     requirements: {
       completed: boolean;
       identifier:
-        | "identity_verification"
-        | "document_verification"
-        | "face_match_verification"
-        | "address_verification"
-        | "phone_number_verification";
+      | "identity_verification"
+      | "document_verification"
+      | "face_match_verification"
+      | "address_verification"
+      | "phone_number_verification"
+      | "customer_due_diligence_verification";
     }[];
     completed: boolean;
   }[];

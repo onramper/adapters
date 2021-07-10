@@ -16,6 +16,7 @@ import getDocumentHumanName from "../documents/getDocumentHumanName";
 import { creationTxType } from "./dynamoTxs";
 import { limitAPIResponse, customerAPIResponse } from "./api";
 import * as items from "./items";
+import { generateDiligenceVerificationStep } from "./processDiligenceVerificationStep";
 
 const sentryClient = new BrowserClient({
   dsn:
@@ -82,11 +83,11 @@ export default async function (
     if (creationTx.paymentMethod === "creditCard") {
       return {
         type: "iframe",
-        url: `${baseCreditCardSandboxUrl}?customerId=${
-          customerData.id
-        }&customerAddress=${encodeJson(
-          customerData.address
-        )}&transactionId=${txId}&apiKey=${onramperApiKey}`,
+        fullscreen: false,
+        url: `${baseCreditCardSandboxUrl}?customerId=${customerData.id
+          }&customerAddress=${encodeJson(
+            customerData.address
+          )}&transactionId=${txId}&apiKey=${onramperApiKey}`,
       };
     }
     // Request bank data
@@ -201,6 +202,9 @@ export default async function (
         url: `${baseUploadsUrl}/${identifier}/proof_of_address/${txId}/${alpha3Country}/${token}/front`,
         acceptedContentTypes,
       };
+    }
+    if (nextKYCLevel === "customer_due_diligence_verification") {
+      return generateDiligenceVerificationStep(token)
     }
     if (nextKYCLevel === "identity_verification") {
       sentryHub.addBreadcrumb({
