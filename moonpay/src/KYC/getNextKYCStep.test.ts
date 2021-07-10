@@ -79,6 +79,7 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
   expect(lowAmount.type).toBe("iframe");
   expect(lowAmount).toMatchInlineSnapshot(`
     Object {
+      "fullscreen": false,
       "type": "iframe",
       "url": "https://moonpay.sandbox.onramper.tech?customerId=undefined&customerAddress=eyJjb3VudHJ5IjoiRVNQIn0=&transactionId=123&apiKey=pk_test_aaaaaa",
     }
