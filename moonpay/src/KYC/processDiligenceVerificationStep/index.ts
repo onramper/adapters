@@ -78,7 +78,7 @@ export async function processsEnhancedDiligenceVerificationProofOfIncomeStep(
     body: JSON.stringify({
       operationName: "updateEnhancedDueDiligence",
       variables: {
-        netWorth: body[items.profession.name],
+        netWorth: body[items.netWorth.name],
         profession: body[items.profession.name],
         currencyCode: fiatCurrency.toLowerCase(),
       },
