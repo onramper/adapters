@@ -14,7 +14,7 @@ import registerBank from "./registerBank";
 import sendWaypoint from "./sendWaypoint";
 import { setPartnerContext } from "./index";
 import processDiligenceVerificationStep, {
-  generateEnhancedDiligenceVerificationProofOfIncomeStep,
+  processsEnhancedDiligenceVerificationProofOfIncomeStep,
 } from "./KYC/processDiligenceVerificationStep";
 
 // Separated cause it's too bulky
@@ -177,11 +177,11 @@ export default function (
   if (step === "identityState") {
     return processIdentityState(tokenValues, body, onramperApiKey);
   }
-  if (step === "diligence_verification") {
+  if (step === "diligenceVerification") {
     return processDiligenceVerificationStep(tokenValues, body, onramperApiKey);
   }
   if (step === "proofOfIncome") {
-    return generateEnhancedDiligenceVerificationProofOfIncomeStep(
+    return processsEnhancedDiligenceVerificationProofOfIncomeStep(
       tokenValues,
       body,
       onramperApiKey

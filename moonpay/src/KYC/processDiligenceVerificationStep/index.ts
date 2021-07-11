@@ -19,11 +19,9 @@ export async function generateDiligenceVerificationStep(
     type: "form",
     humanName: "Answer some final questions",
     hint: "To protect your account, we need to ask you some final questions.",
-    url: `${baseAPIUrl}/transaction/${identifier}/getNextKYCStep/${encodeToken([
-      txId,
-      fiatCurrency,
-      token,
-    ])}`,
+    url: `${baseAPIUrl}/transaction/${identifier}/diligenceVerification/${encodeToken(
+      [txId, fiatCurrency, token]
+    )}`,
     data: [
       items.accountPurpose,
       items.employmentStatus,
@@ -54,7 +52,7 @@ export async function generateEnhancedDiligenceVerificationStep(
   };
 }
 
-export async function generateEnhancedDiligenceVerificationProofOfIncomeStep(
+export async function processsEnhancedDiligenceVerificationProofOfIncomeStep(
   tokenValues: (string | number)[],
   body: any,
   _onramperApiKey: string

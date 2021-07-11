@@ -218,8 +218,8 @@ export default async function (
       const alpha3Country = getAlpha3Country(customerData.address.country);
       return generateEnhancedDiligenceVerificationStep(
         txId,
-        alpha3Country,
         creationTx.fiatCurrency.toLowerCase(),
+        alpha3Country,
         token
       );
     }
