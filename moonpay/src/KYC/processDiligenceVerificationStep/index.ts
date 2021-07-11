@@ -68,24 +68,31 @@ export async function processsEnhancedDiligenceVerificationProofOfIncomeStep(
     throw new StepError("URL is incorrect.", null);
   }
   const [id, fiatCurrency, alpha3Country, csrfToken] = tokenValues;
-  const result = (await fetch(`https://api.moonpay.io/graphql`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRF-TOKEN": csrfToken,
-    },
-    credentials: "include",
-    body: JSON.stringify({
-      operationName: "updateEnhancedDueDiligence",
-      variables: {
-        netWorth: body[items.netWorth.name],
-        profession: body[items.profession.name],
-        currencyCode: fiatCurrency.toLowerCase(),
+  const result = (
+    await fetch(`https://api.moonpay.io/graphql`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": csrfToken,
       },
-      query:
-        "mutation updateEnhancedDueDiligence($currencyCode: String, $netWorth: NetWorth!, $profession: String!) {\n  updateEnhancedDueDiligence(currencyCode: $currencyCode, netWorth: $netWorth, profession: $profession) {\n    success\n    __typename\n  }\n}\n",
-    }),
-  }).then((res) => res.json())) as DiligenceResponse;
+      credentials: "include",
+      body: JSON.stringify({
+        operationName: "updateEnhancedDueDiligence",
+        variables: {
+          netWorth: body[items.netWorth.name],
+          profession: body[items.profession.name],
+          currencyCode: fiatCurrency.toLowerCase(),
+        },
+        query:
+          "mutation updateEnhancedDueDiligence($currencyCode: String, $netWorth: NetWorth!, $profession: String!) {\n  updateEnhancedDueDiligence(currencyCode: $currencyCode, netWorth: $netWorth, profession: $profession) {\n    success\n    __typename\n  }\n}\n",
+      }),
+    }).then((res) => res.json())
+  ).catch((e: any) => {
+    throw new StepError(
+      `Customer due diligence verification failed: ${e.errors[0].message}`,
+      null
+    );
+  }) as DiligenceResponse;
 
   if (!result.data.updateCustomerDueDiligence.success) {
     sentryHub.addBreadcrumb({
