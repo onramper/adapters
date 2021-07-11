@@ -68,34 +68,32 @@ export async function processsEnhancedDiligenceVerificationProofOfIncomeStep(
     throw new StepError("URL is incorrect.", null);
   }
   const [id, fiatCurrency, alpha3Country, csrfToken] = tokenValues;
-  const result = (
-    await fetch(`https://api.moonpay.io/graphql`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-TOKEN": csrfToken,
+  const result = (await fetch(`https://api.moonpay.io/graphql`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-TOKEN": csrfToken,
+    },
+    credentials: "include",
+    body: JSON.stringify({
+      operationName: "updateEnhancedDueDiligence",
+      variables: {
+        netWorth: body[items.netWorth.name],
+        profession: body[items.profession.name],
+        currencyCode: fiatCurrency.toLowerCase(),
       },
-      credentials: "include",
-      body: JSON.stringify({
-        operationName: "updateEnhancedDueDiligence",
-        variables: {
-          netWorth: body[items.netWorth.name],
-          profession: body[items.profession.name],
-          currencyCode: fiatCurrency.toLowerCase(),
-        },
-        query:
-          "mutation updateEnhancedDueDiligence($currencyCode: String, $netWorth: NetWorth!, $profession: String!) {\n  updateEnhancedDueDiligence(currencyCode: $currencyCode, netWorth: $netWorth, profession: $profession) {\n    success\n    __typename\n  }\n}\n",
-      }),
-    }).then((res) => res.json())
-  ).catch((e: any) => {
-    console.log(e);
-    throw new StepError(
-      `Customer due diligence verification failed: ${e.errors[0].message}`,
-      null
-    );
-  }) as DiligenceResponse;
-  console.log(result);
-  if (!result.data.updateCustomerDueDiligence.success) {
+      query:
+        "mutation updateEnhancedDueDiligence($currencyCode: String, $netWorth: NetWorth!, $profession: String!) {\n  updateEnhancedDueDiligence(currencyCode: $currencyCode, netWorth: $netWorth, profession: $profession) {\n    success\n    __typename\n  }\n}\n",
+    }),
+  })
+    .then((res) => res.json())
+    .catch((e: any) => {
+      throw new StepError(
+        `Customer due diligence verification failed: ${e.errors[0].message}`,
+        null
+      );
+    })) as EnhancedDiligenceResponse;
+  if (!result.data.updateEnhancedDueDiligence.success) {
     sentryHub.addBreadcrumb({
       message: `updateEnhancedDueDiligence`,
       data: { d: JSON.stringify(result) },
@@ -107,7 +105,7 @@ export async function processsEnhancedDiligenceVerificationProofOfIncomeStep(
       null
     );
   }
-  console.log("ok");
+
   return {
     type: "file",
     humanName: "Proof of income document",
@@ -125,6 +123,15 @@ export async function processsEnhancedDiligenceVerificationProofOfIncomeStep(
 interface DiligenceResponse {
   data: {
     updateCustomerDueDiligence: {
+      success: boolean;
+      __typename: "SuccessPayload";
+    };
+  };
+}
+
+interface EnhancedDiligenceResponse {
+  data: {
+    updateEnhancedDueDiligence: {
       success: boolean;
       __typename: "SuccessPayload";
     };

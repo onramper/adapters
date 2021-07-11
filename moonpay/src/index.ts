@@ -1,5 +1,5 @@
 import processStep from "./processStep";
-import { StepError } from "./errors";
+import { InternalError, StepError } from "./errors";
 import processFileUpload from "./processFileUpload";
 import finishCCTransaction from "./finishCCTransaction";
 import checkTransaction from "./checkTransaction";
@@ -101,10 +101,10 @@ export default async (
         field: e.field,
       });
     }
+    // eslint-disable-next-line no-new
+    new InternalError(JSON.stringify(e));
     return errorResponse({
-      message: `Unexpected error happened when handling the request: ${JSON.stringify(
-        e
-      )}`,
+      message: `Unexpected error happened when handling the request:`,
     });
   }
 };
