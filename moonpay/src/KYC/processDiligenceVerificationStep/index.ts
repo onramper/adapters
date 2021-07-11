@@ -1,19 +1,27 @@
 import { StepError } from "../../errors";
-import { checkBodyParams, checkTokenTypes } from "../../utils/token";
+import {
+  checkBodyParams,
+  checkTokenTypes,
+  encodeToken,
+} from "../../utils/token";
 import * as items from "../items";
 import getNextKYCStepFromTxIdAndToken from "../getNextKYCStepFromTxIdAndToken";
 import { baseAPIUrl, identifier } from "../../constants";
 import { nextStep } from "../../utils/types";
-import { getCreationTx } from "../dynamoTxs";
+import { sentryHub } from "../getNextKYCStep";
 
 export async function generateDiligenceVerificationStep(
+  txId: string,
+  fiatCurrency: string,
   token: string
 ): Promise<nextStep> {
   return {
     type: "form",
     humanName: "Answer some final questions",
     hint: "To protect your account, we need to ask you some final questions.",
-    url: `${baseAPIUrl}/transaction/${identifier}/diligence_verification/${token}`,
+    url: `${baseAPIUrl}/transaction/${identifier}/diligence_verification/${encodeToken(
+      [txId, fiatCurrency, token]
+    )}`,
     data: [
       items.accountPurpose,
       items.employmentStatus,
@@ -38,10 +46,10 @@ export default async function (
   body: any,
   onramperApiKey: string
 ) {
-  if (!checkTokenTypes<[string, string]>(tokenValues, ["", ""])) {
+  if (!checkTokenTypes<[string, string, string]>(tokenValues, ["", "", ""])) {
     throw new StepError("URL is incorrect.", null);
   }
-  const [id, csrfToken] = tokenValues;
+  const [id, fiatCurrency, csrfToken] = tokenValues;
   checkBodyParams(body, [
     items.accountPurpose,
     items.employmentStatus,
@@ -49,8 +57,6 @@ export default async function (
     items.sourceOfFunds,
     items.annualExpectedActivity,
   ]);
-
-  const creationTx = await getCreationTx(id);
 
   const result = (await fetch(`https://api.moonpay.io/graphql`, {
     method: "POST",
@@ -64,7 +70,7 @@ export default async function (
       variables: {
         accountPurpose: body[items.accountPurpose.name],
         annualExpectedActivity: body[items.annualExpectedActivity.name],
-        currencyCode: creationTx.fiatCurrency.toLowerCase(),
+        currencyCode: fiatCurrency.toLowerCase(),
         employmentStatus: body[items.employmentStatus.name],
         grossAnnualIncome: body[items.grossAnnualIncome.name],
         sourceOfFunds: body[items.sourceOfFunds.name],
@@ -74,8 +80,16 @@ export default async function (
     }),
   }).then((res) => res.json())) as DiligenceResponse;
 
-  if (!result.data.updateCustomerDueDiligence.success)
-    throw new StepError("fsdfs", null);
+  if (!result.data.updateCustomerDueDiligence.success) {
+    sentryHub.addBreadcrumb({
+      message: `updateCustomerDueDiligence`,
+      data: { d: JSON.stringify(result) },
+    });
+    throw new StepError(
+      "Customer due diligence verification failed, please, contact support@onramper.com",
+      null
+    );
+  }
 
   return getNextKYCStepFromTxIdAndToken(id, csrfToken, onramperApiKey);
 }

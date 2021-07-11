@@ -23,7 +23,7 @@ const sentryClient = new BrowserClient({
     "https://283a138678d94cc295852f634d4cdd1c@o506512.ingest.sentry.io/5638949",
   environment: process.env.STAGE,
 });
-const sentryHub = new Hub(sentryClient);
+export const sentryHub = new Hub(sentryClient);
 
 function selectLimit(
   limits: limitAPIResponse,
@@ -205,7 +205,11 @@ export default async function (
       };
     }
     if (nextKYCLevel === "customer_due_diligence_verification") {
-      return generateDiligenceVerificationStep(token);
+      return generateDiligenceVerificationStep(
+        txId,
+        creationTx.fiatCurrency.toLowerCase(),
+        token
+      );
     }
     if (nextKYCLevel === "identity_verification") {
       sentryHub.addBreadcrumb({
