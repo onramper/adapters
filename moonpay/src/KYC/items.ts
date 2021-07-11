@@ -294,3 +294,35 @@ export const annualExpectedActivity: stepItem = {
     },
   ],
 };
+
+export const netWorth: stepItem = {
+  type: "select",
+  name: "netWorth",
+  humanName: "What is your rough net worth in EUR?",
+  required: true,
+  options: [
+    {
+      value: "LessThan50k",
+      humanName: "49,999 EUR or less",
+    },
+    {
+      value: "MoreThan50k",
+      humanName: "50,000 - 99,000 EUR",
+    },
+    {
+      value: "MoreThan100k",
+      humanName: "100,000 - 499,000 EUR",
+    },
+    {
+      value: "MoreThan500k",
+      humanName: "1,000,000 EUR or more",
+    },
+  ],
+};
+
+export const profession: stepItem = {
+  type: "string",
+  name: "profession",
+  humanName: "What is your profession?",
+  required: true,
+};

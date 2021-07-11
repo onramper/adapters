@@ -46,6 +46,17 @@ export default async function (
     body: file,
   });
 
+  const filesEndpointBody: any = {
+    key,
+    type: documentType,
+    country: alpha3Country,
+  };
+  if (documentType === "proof_of_income") {
+    filesEndpointBody.checkReadability = false;
+  } else {
+    filesEndpointBody.side = side;
+  }
+
   await fetch(`${moonpayBaseAPI}/files`, {
     method: "POST",
     headers: {
@@ -53,12 +64,7 @@ export default async function (
       "Content-Type": "application/json",
     },
     credentials: "include",
-    body: JSON.stringify({
-      key,
-      type: documentType,
-      side,
-      country: alpha3Country,
-    }),
+    body: JSON.stringify(filesEndpointBody),
   });
 
   if (

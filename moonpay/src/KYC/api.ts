@@ -37,7 +37,8 @@ export interface limitAPIResponse {
         | "face_match_verification"
         | "address_verification"
         | "phone_number_verification"
-        | "customer_due_diligence_verification";
+        | "customer_due_diligence_verification"
+        | "enhanced_due_diligence_verification";
     }[];
     completed: boolean;
   }[];

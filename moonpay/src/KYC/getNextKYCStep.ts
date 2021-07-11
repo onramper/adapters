@@ -16,7 +16,10 @@ import getDocumentHumanName from "../documents/getDocumentHumanName";
 import { creationTxType } from "./dynamoTxs";
 import { limitAPIResponse, customerAPIResponse } from "./api";
 import * as items from "./items";
-import { generateDiligenceVerificationStep } from "./processDiligenceVerificationStep";
+import {
+  generateDiligenceVerificationStep,
+  generateEnhancedDiligenceVerificationStep,
+} from "./processDiligenceVerificationStep";
 
 const sentryClient = new BrowserClient({
   dsn:
@@ -207,6 +210,15 @@ export default async function (
     if (nextKYCLevel === "customer_due_diligence_verification") {
       return generateDiligenceVerificationStep(
         txId,
+        creationTx.fiatCurrency.toLowerCase(),
+        token
+      );
+    }
+    if (nextKYCLevel === "enhanced_due_diligence_verification") {
+      const alpha3Country = getAlpha3Country(customerData.address.country);
+      return generateEnhancedDiligenceVerificationStep(
+        txId,
+        alpha3Country,
         creationTx.fiatCurrency.toLowerCase(),
         token
       );
