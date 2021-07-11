@@ -88,13 +88,13 @@ export async function processsEnhancedDiligenceVerificationProofOfIncomeStep(
       }),
     }).then((res) => res.json())
   ).catch((e: any) => {
-    console.log(e)
+    console.log(e);
     throw new StepError(
       `Customer due diligence verification failed: ${e.errors[0].message}`,
       null
     );
   }) as DiligenceResponse;
-  console.log(result)
+  console.log(result);
   if (!result.data.updateCustomerDueDiligence.success) {
     sentryHub.addBreadcrumb({
       message: `updateEnhancedDueDiligence`,
@@ -107,7 +107,7 @@ export async function processsEnhancedDiligenceVerificationProofOfIncomeStep(
       null
     );
   }
-  console.log('ok')
+  console.log("ok");
   return {
     type: "file",
     humanName: "Proof of income document",
