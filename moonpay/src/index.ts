@@ -102,7 +102,9 @@ export default async (
       });
     }
     return errorResponse({
-      message: "Unexpected error happened when handling the request",
+      message: `Unexpected error happened when handling the request: ${JSON.stringify(
+        e
+      )}`,
     });
   }
 };
