@@ -13,6 +13,7 @@ import * as items from "./items";
 import validateAddress from "../utils/validateAddress";
 import sendWaypoint from "../sendWaypoint";
 import hash from "../utils/hash";
+import extractEnv from "../utils/extractEnv";
 
 interface EmailLoginResponse {
   preAuthenticated: boolean;
@@ -37,8 +38,12 @@ export default async function (
   cryptocurrencyAddressTag: string | undefined,
   country: string
 ): Promise<nextStep> {
+  const apiEnv = extractEnv(onramperApiKey);
   // TODO: Validate all new transaction data
-  if (validateAddress(cryptocurrencyAddress, cryptoCurrency) === false) {
+  if (
+    apiEnv === "prod" &&
+    validateAddress(cryptocurrencyAddress, cryptoCurrency) === false
+  ) {
     throw new StepError(
       "The provided cryptocurrency address is not valid.",
       items.cryptocurrencyAddress.name
