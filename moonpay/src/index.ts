@@ -4,6 +4,7 @@ import processFileUpload from "./processFileUpload";
 import finishCCTransaction from "./finishCCTransaction";
 import checkTransaction from "./checkTransaction";
 import { baseCreditCardSandboxUrl } from "./constants";
+import { sentryHub } from "./KYC/getNextKYCStep";
 
 const text = () => Promise.resolve("Unused");
 
@@ -103,6 +104,11 @@ export default async (
     }
     // eslint-disable-next-line no-new
     new InternalError(JSON.stringify(e));
+    sentryHub.addBreadcrumb({
+      message: `fistStep`,
+      data: { d: JSON.stringify(e), e },
+    });
+    sentryHub.captureException(e);
     return errorResponse({
       message: `Unexpected error happened when handling the request:`,
     });
