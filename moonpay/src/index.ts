@@ -110,7 +110,7 @@ export default async (
     });
     sentryHub.captureException(e);
     return errorResponse({
-      message: `Unexpected error happened when handling the request:`,
+      message: `Unexpected error happened when handling the request: ${e.message}`,
     });
   }
 };
