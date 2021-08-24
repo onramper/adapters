@@ -16,6 +16,7 @@ import { setPartnerContext } from "./index";
 import processDiligenceVerificationStep, {
   processsEnhancedDiligenceVerificationProofOfIncomeStep,
 } from "./KYC/processDiligenceVerificationStep";
+import hash from "./utils/hash";
 
 // Separated cause it's too bulky
 function processIdentityState(
@@ -75,7 +76,7 @@ function processIdentityState(
   );
 }
 
-export default function (
+export default async function (
   step: string,
   token: string,
   body: any,
@@ -88,13 +89,8 @@ export default function (
   } catch (e) {
     throw new StepError("URL is incorrect.", null);
   }
-  if (
-    step !== "email" &&
-    step !== "identity" &&
-    step !== "registerCreditCardToken"
-  ) {
-    sendWaypoint(tokenValues[0].toString(), onramperApiKey, step, {});
-  }
+
+  let nextStepPromise: Promise<nextStep>;
   if (step === "email") {
     setPartnerContext(body.partnerContext);
     if (
@@ -120,7 +116,7 @@ export default function (
       items.cryptocurrencyAddress,
       items.cryptocurrencyAddressTag,
     ]);
-    return registerEmail(
+    nextStepPromise = registerEmail(
       id,
       amount,
       fiatCurrency,
@@ -132,22 +128,22 @@ export default function (
       body[items.cryptocurrencyAddressTag.name],
       country
     );
-  }
-  if (step === "verifyEmail") {
+    /* eslint-disable no-param-reassign */
+    body[items.emailItem.name] = await hash(body[items.emailItem.name]);
+  } else if (step === "verifyEmail") {
     if (!checkTokenTypes<[string, string]>(tokenValues, ["", ""])) {
       throw new StepError("URL is incorrect.", null);
     }
     const [id, email] = tokenValues;
     checkBodyParams(body, [items.verifyEmailCodeItem]);
-    return verifyEmail(
+    nextStepPromise = verifyEmail(
       id,
       email,
       body[items.verifyEmailCodeItem.name],
       onramperApiKey,
       country
     );
-  }
-  if (step === "identity") {
+  } else if (step === "identity") {
     if (!checkTokenTypes<[string]>(tokenValues, [""])) {
       throw new StepError("URL is incorrect.", null);
     }
@@ -161,7 +157,7 @@ export default function (
       items.postCodeItem,
       items.countryItem,
     ]); // Doesn't include 'state', it's optional
-    return registerIdentity(
+    nextStepPromise = registerIdentity(
       id,
       onramperApiKey,
       body[items.firstNameItem.name],
@@ -173,83 +169,90 @@ export default function (
       body[items.stateItem.name],
       body[items.countryItem.name]
     );
-  }
-  if (step === "identityState") {
-    return processIdentityState(tokenValues, body, onramperApiKey);
-  }
-  if (step === "diligenceVerification") {
-    return processDiligenceVerificationStep(tokenValues, body, onramperApiKey);
-  }
-  if (step === "proofOfIncome") {
-    return processsEnhancedDiligenceVerificationProofOfIncomeStep(
+  } else if (step === "identityState") {
+    nextStepPromise = processIdentityState(tokenValues, body, onramperApiKey);
+  } else if (step === "diligenceVerification") {
+    nextStepPromise = processDiligenceVerificationStep(
       tokenValues,
       body,
       onramperApiKey
     );
-  }
-  if (step === "getNextKYCStep") {
+  } else if (step === "proofOfIncome") {
+    nextStepPromise = processsEnhancedDiligenceVerificationProofOfIncomeStep(
+      tokenValues,
+      body,
+      onramperApiKey
+    );
+  } else if (step === "getNextKYCStep") {
     if (!checkTokenTypes<[string, string]>(tokenValues, ["", ""])) {
       throw new StepError("URL is incorrect.", null);
     }
     const [id, csrfToken] = tokenValues;
-    return getNextKYCStepFromTxIdAndToken(id, csrfToken, onramperApiKey);
-  }
-  if (step === "registerPhone") {
+    nextStepPromise = getNextKYCStepFromTxIdAndToken(
+      id,
+      csrfToken,
+      onramperApiKey
+    );
+  } else if (step === "registerPhone") {
     if (!checkTokenTypes<[string, string]>(tokenValues, ["", ""])) {
       throw new StepError("URL is incorrect.", null);
     }
     const [id, csrfToken] = tokenValues;
     checkBodyParams(body, [items.phoneCountryCodeItem, items.phoneNumberItem]);
-    return registerPhone(
+    nextStepPromise = registerPhone(
       id,
       csrfToken,
       body[items.phoneCountryCodeItem.name],
       body[items.phoneNumberItem.name]
     );
-  }
-  if (step === "verifyPhone") {
+  } else if (step === "verifyPhone") {
     if (!checkTokenTypes<[string, string]>(tokenValues, ["", ""])) {
       throw new StepError("URL is incorrect.", null);
     }
     const [id, csrfToken] = tokenValues;
     checkBodyParams(body, [items.verifyPhoneCodeItem]);
-    return verifyPhone(
+    nextStepPromise = verifyPhone(
       id,
       csrfToken,
       body[items.verifyPhoneCodeItem.name],
       onramperApiKey
     );
-  }
-  if (step === "registerBank") {
+  } else if (step === "registerBank") {
     if (!checkTokenTypes<[string, string, string]>(tokenValues, ["", "", ""])) {
       throw new StepError("URL is incorrect.", null);
     }
     const [id, csrfToken, fiatCurrency] = tokenValues;
     if (fiatCurrency === "EUR") {
       checkBodyParams(body, [items.bankIbanItem]);
-      return registerBank(id, csrfToken, {
+      nextStepPromise = registerBank(id, csrfToken, {
         currencyCode: "eur",
         iban: body[items.bankIbanItem.name],
       });
-    }
-    if (fiatCurrency === "GBP") {
+    } else if (fiatCurrency === "GBP") {
       checkBodyParams(body, [
         items.bankSortCodeItem,
         items.bankAccountNumberItem,
       ]);
-      return registerBank(id, csrfToken, {
+      nextStepPromise = registerBank(id, csrfToken, {
         currencyCode: "gbp",
         accountNumber: body[items.bankAccountNumberItem.name],
         sortCode: body[items.bankSortCodeItem.name],
       });
     }
     throw new StepError("URL is incorrect, unaccepted fiat currency.", null);
-  }
-  if (step === "registerCreditCardToken") {
+  } else if (step === "registerCreditCardToken") {
     throw new StepError(
       `The last step of the credit card flow, 'registerCreditCardToken', should not be called through the default method, instead it should be called with the function 'finishCCTransaction' that is directly exported from the package. Check the package's readme for more details.`,
       null
     );
+  } else {
+    throw new StepError(`Step '${step}' is not defined for Moonpay.`, null);
   }
-  throw new StepError(`Step '${step}' is not defined for Moonpay.`, null);
+
+  if (step !== "getNextKYCStep") {
+    // ignore this step as nothing new is stored.
+    sendWaypoint(token, onramperApiKey, step, body);
+  }
+
+  return nextStepPromise;
 }
