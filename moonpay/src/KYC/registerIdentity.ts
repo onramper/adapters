@@ -15,7 +15,6 @@ import getNextKYCStep from "./getNextKYCStep";
 import fetch from "../utils/fetch";
 import { stateItem, countryItem } from "./items";
 import { StepError, FetchError } from "../errors";
-import sendWaypoint from "../sendWaypoint";
 
 export function generateDate({ year, month, day }: dateInfo): string {
   const pad = (strN: number, n: number) => String(strN).padStart(n, "0");
@@ -116,9 +115,6 @@ export default async function (
     alpha3Country: country,
     alpha2Country: providedCountry,
   } as identityTX);
-  sendWaypoint(id, onramperApiKey, "identity", {
-    country: providedCountry,
-  });
   try {
     const updatedCustomerData = (await fetch(`${moonpayBaseAPI}/customers/me`, {
       method: "PATCH",

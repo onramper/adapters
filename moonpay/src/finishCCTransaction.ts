@@ -5,7 +5,6 @@ import ddb from "./utils/dynamodb";
 import roundUp from "./utils/roundUp";
 import { getCreationTx, getTxAuthToken } from "./KYC/dynamoTxs";
 import { StepError, FetchError } from "./errors";
-import sendWaypoint from "./sendWaypoint";
 import TransactionResponse from "./TransactionResponse";
 import { getPartnerContext } from "./index";
 import { encodeToken } from "./utils/token";
@@ -80,9 +79,6 @@ export default async function (
       Timestamp: Date.now(),
       status: moonpayTx.status,
       moonpayTxId: moonpayTx.id,
-    });
-    sendWaypoint(txId, creationTx.apiKey, "registerCreditCardToken", {
-      status: moonpayTx.status,
     });
     if (moonpayTx.status === "waitingAuthorization") {
       if (typeof moonpayTx.redirectUrl !== "string") {

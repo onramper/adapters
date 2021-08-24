@@ -11,8 +11,6 @@ import { encodeToken } from "../utils/token";
 import { createCreationTx } from "./dynamoTxs";
 import * as items from "./items";
 import validateAddress from "../utils/validateAddress";
-import sendWaypoint from "../sendWaypoint";
-import hash from "../utils/hash";
 import extractEnv from "../utils/extractEnv";
 
 interface EmailLoginResponse {
@@ -101,10 +99,6 @@ export default async function (
     cryptocurrencyAddressTag,
     country,
     apiKey: onramperApiKey,
-  });
-  sendWaypoint(id, onramperApiKey, "email", {
-    ...record,
-    email: await hash(email),
   });
   const termsOfUse: items.stepItem = {
     type: "boolean",
