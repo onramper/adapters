@@ -64,7 +64,7 @@ export default async function (
   let txType: string;
   if (creationTx.paymentMethod === "creditCard") {
     txType = "buy_credit_debit_card";
-  } else if (creationTx.paymentMethod === "bankTransfer") {
+  } else if (creationTx.paymentMethod === "sepaBankTransfer") {
     if (creationTx.fiatCurrency === "EUR") {
       txType = "buy_sepa_bank_transfer";
     } else if (creationTx.fiatCurrency === "GBP") {
