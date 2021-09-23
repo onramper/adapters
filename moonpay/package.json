@@ -4,7 +4,7 @@
     "type": "git",
     "url": "git+https://github.com/onramper/adapters.git"
   },
-  "version": "1.6.11",
+  "version": "1.6.12",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "license": "MIT",
