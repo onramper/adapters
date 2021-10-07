@@ -11,7 +11,7 @@ test("processStep() fails if the token is incorrect or doesn't carry the right d
   // Incorrect token formating
   expect(() =>
     processStep("", "unformatted_token", {}, "pk_prod_MOCK", "es")
-  ).toThrowErrorMatchingInlineSnapshot(`"URL is incorrect."`);
+  ).rejects.toThrowErrorMatchingInlineSnapshot(`"URL is incorrect."`);
   // Incorrect token data
   expect(() =>
     processStep(
@@ -21,10 +21,10 @@ test("processStep() fails if the token is incorrect or doesn't carry the right d
       "pk_prod_MOCK",
       "es"
     )
-  ).toThrowErrorMatchingInlineSnapshot(`"URL is incorrect."`);
+  ).rejects.toThrowErrorMatchingInlineSnapshot(`"URL is incorrect."`);
   expect(() =>
     processStep("email", encodeToken(["a"]), {}, "pk_prod_MOCK", "es")
-  ).toThrowErrorMatchingInlineSnapshot(`"URL is incorrect."`);
+  ).rejects.toThrowErrorMatchingInlineSnapshot(`"URL is incorrect."`);
   expect(() =>
     processStep(
       "verifyEmail",
@@ -33,7 +33,7 @@ test("processStep() fails if the token is incorrect or doesn't carry the right d
       "pk_prod_MOCK",
       "es"
     )
-  ).toThrowErrorMatchingInlineSnapshot(
+  ).rejects.toThrowErrorMatchingInlineSnapshot(
     `"Parameter 'verifyEmailCode' is not defined on json body."`
   );
 });
@@ -41,7 +41,7 @@ test("processStep() fails if the token is incorrect or doesn't carry the right d
 test("if step doesn't exist, a descriptive error is thrown", () => {
   expect(() =>
     processStep("wrong", encodeToken([1]), {}, "pk_prod_MOCK", "es")
-  ).toThrowErrorMatchingInlineSnapshot(
+  ).rejects.toThrowErrorMatchingInlineSnapshot(
     `"Step 'wrong' is not defined for Moonpay."`
   );
 });
@@ -55,7 +55,7 @@ test("missing identity data on body results in an error that reports on the miss
       "pk_prod_MOCK",
       "es"
     )
-  ).toThrowErrorMatchingInlineSnapshot(
+  ).rejects.toThrowErrorMatchingInlineSnapshot(
     `"Parameter 'firstName' is not defined on json body."`
   );
 });
