@@ -48,7 +48,7 @@ export default {
   LUNA: /^(terra1)[0-9A-Za-z]{38}$/,
   MANA: /^(0x)[0-9A-Fa-f]{40}$/,
   MATIC: /^(0x)[0-9A-Fa-f]{40}$/,
-  MIOTA: /^[A-Z9]{90}$/,
+  MIOTA: /^(iota)[0-9a-z]{60}$/,
   MKR: /^(0x)[0-9A-Fa-f]{40}$/,
   NANO: /^(xrb_|nano_)[13456789abcdefghijkmnopqrstuwxyz]{60}$/,
   NEAR: /^[a-z0-9_-]{1}[a-z0-9_.-]{0,62}[a-z0-9_-]{1}$/,
