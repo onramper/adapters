@@ -29,7 +29,7 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
           ],
           "humanName": "Passport - Front",
           "type": "file",
-          "url": "https://upload.onramper.tech/Moonpay/passport/123/ESP/sumAuthToken/front",
+          "url": "https://upload.staging.onramper.tech/Moonpay/passport/123/ESP/sumAuthToken/front",
         },
         Object {
           "acceptedContentTypes": Array [
@@ -39,7 +39,7 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
           ],
           "humanName": "Driver's License - Front",
           "type": "file",
-          "url": "https://upload.onramper.tech/Moonpay/driving_licence/123/ESP/sumAuthToken/front",
+          "url": "https://upload.staging.onramper.tech/Moonpay/driving_licence/123/ESP/sumAuthToken/front",
         },
         Object {
           "acceptedContentTypes": Array [
@@ -49,7 +49,7 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
           ],
           "humanName": "National Identity Card - Front",
           "type": "file",
-          "url": "https://upload.onramper.tech/Moonpay/national_identity_card/123/ESP/sumAuthToken/front",
+          "url": "https://upload.staging.onramper.tech/Moonpay/national_identity_card/123/ESP/sumAuthToken/front",
         },
         Object {
           "acceptedContentTypes": Array [
@@ -59,7 +59,7 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
           ],
           "humanName": "Residence Card - Front",
           "type": "file",
-          "url": "https://upload.onramper.tech/Moonpay/residence_permit/123/ESP/sumAuthToken/front",
+          "url": "https://upload.staging.onramper.tech/Moonpay/residence_permit/123/ESP/sumAuthToken/front",
         },
       ],
       "type": "pickOne",
@@ -81,7 +81,7 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
     Object {
       "fullscreen": false,
       "type": "iframe",
-      "url": "https://moonpay.sandbox.onramper.tech?customerId=undefined&customerAddress=eyJjb3VudHJ5IjoiRVNQIn0=&transactionId=123&apiKey=pk_test_aaaaaa",
+      "url": "https://moonpay.sandbox.staging.onramper.tech?customerId=undefined&customerAddress=eyJjb3VudHJ5IjoiRVNQIn0=&transactionId=123&apiKey=pk_test_aaaaaa",
     }
   `);
 });

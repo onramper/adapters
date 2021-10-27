@@ -7,7 +7,7 @@ import index, {
 test("simple type snapshot of all exports", async () => {
   expect(index).toMatchInlineSnapshot(`[Function]`);
   expect(baseCreditCardSandboxUrl).toMatchInlineSnapshot(
-    `"https://moonpay.sandbox.onramper.tech"`
+    `"https://moonpay.sandbox.staging.onramper.tech"`
   );
   expect(finishCCTransaction).toMatchInlineSnapshot(`[Function]`);
   expect(moonpayUrlRegex).toMatchInlineSnapshot(
@@ -15,7 +15,7 @@ test("simple type snapshot of all exports", async () => {
   );
   expect(await import("./index")).toMatchInlineSnapshot(`
     Object {
-      "baseCreditCardSandboxUrl": "https://moonpay.sandbox.onramper.tech",
+      "baseCreditCardSandboxUrl": "https://moonpay.sandbox.staging.onramper.tech",
       "checkTransaction": [Function],
       "default": [Function],
       "finishCCTransaction": [Function],
