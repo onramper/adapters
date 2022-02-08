@@ -6,8 +6,6 @@ import roundUp from "./utils/roundUp";
 import { getCreationTx, getTxAuthToken } from "./KYC/dynamoTxs";
 import { StepError, FetchError } from "./errors";
 import TransactionResponse from "./TransactionResponse";
-import { getPartnerContext } from "./index";
-import { encodeToken } from "./utils/token";
 
 interface NetworkFeeEstimateResponse {
   data: {
@@ -44,10 +42,6 @@ export default async function (
       }),
     }).then((res) => res.json())) as NetworkFeeEstimateResponse;
 
-    const partnerContext = getPartnerContext()
-      ? `${JSON.stringify(getPartnerContext())}`
-      : "";
-
     const moonpayTx = (await fetch(`${moonpayBaseAPI}/transactions`, {
       method: "POST",
       headers: {
@@ -66,11 +60,7 @@ export default async function (
         currencyCode: creationTx.cryptoCurrency.toLowerCase(),
         returnUrl: `${baseCreditCardSandboxUrl}/finished.html?txId=${txId}`,
         tokenId: ccTokenId,
-        externalTransactionId: encodeToken([
-          txId,
-          creationTx.apiKey,
-          partnerContext,
-        ]),
+        externalTransactionId: txId,
       }),
     }).then((res) => res.json())) as TransactionResponse;
     ddb.put({

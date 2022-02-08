@@ -5,8 +5,6 @@ import ddb from "./utils/dynamodb";
 import roundUp from "./utils/roundUp";
 import { getCreationTx } from "./KYC/dynamoTxs";
 import { StepError } from "./errors";
-import { getPartnerContext } from "./index";
-import { encodeToken } from "./utils/token";
 
 interface BankResponse {
   id: string;
@@ -117,10 +115,6 @@ export default async function (
     }
     const creationTx = await getCreationTx(txId);
 
-    const partnerContext = getPartnerContext()
-      ? `${JSON.stringify(getPartnerContext())}`
-      : "";
-
     const txCreationResponse = (await fetch(`${moonpayBaseAPI}/transactions`, {
       method: "POST",
       ...commonAPIParams,
@@ -132,11 +126,7 @@ export default async function (
         baseCurrencyCode: bankInfo.currencyCode,
         currencyCode: creationTx.cryptoCurrency.toLowerCase(),
         bankAccountId: bankId,
-        externalTransactionId: encodeToken([
-          txId,
-          creationTx.apiKey,
-          partnerContext,
-        ]),
+        externalTransactionId: txId,
       }),
     }).then((res) => res.json())) as CreateBankTransactionResponse;
     ddb.put({
