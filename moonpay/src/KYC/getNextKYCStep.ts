@@ -10,7 +10,7 @@ import {
 import { encodeToken, encodeJson } from "../utils/token";
 import { StepError, InternalError } from "../errors";
 import { nextStep, stepDataItems } from "../utils/types";
-import { requiredDocumentsAlpha3 } from "../moonpayCountryData";
+import { requiredDocumentsAlpha3, documentTypeIcons } from "../moonpayCountryData";
 import fetch from "../utils/fetch";
 import getDocumentHumanName from "../documents/getDocumentHumanName";
 import { creationTxType } from "./dynamoTxs";
@@ -159,12 +159,14 @@ export default async function (
         options: possibleDocuments.map((docId) => {
           let humanName: string;
           try {
-            humanName = `${getDocumentHumanName(docId)} - Front`;
+            humanName = getDocumentHumanName(docId);
           } catch (e) {
             throw new InternalError(e);
           }
           return {
             title: humanName || "",
+            icon: documentTypeIcons[docId],
+            description: "Front",
             nextStep: {
               type: "file",
               humanName,
