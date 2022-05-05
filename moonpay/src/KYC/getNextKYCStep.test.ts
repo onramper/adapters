@@ -22,46 +22,59 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
     Object {
       "options": Array [
         Object {
-          "acceptedContentTypes": Array [
-            "image/jpeg",
-            "image/png",
-            "application/pdf",
-          ],
-          "humanName": "Passport - Front",
-          "type": "file",
-          "url": "https://upload.staging.onramper.tech/Moonpay/passport/123/ESP/sumAuthToken/front",
+          "nextStep": Object {
+            "acceptedContentTypes": Array [
+              "image/jpeg",
+              "image/png",
+              "application/pdf",
+            ],
+            "humanName": "Passport - Front",
+            "type": "file",
+            "url": "https://upload.staging.onramper.tech/Moonpay/passport/123/ESP/sumAuthToken/front",
+          },
+          "title": "Passport - Front",
         },
         Object {
-          "acceptedContentTypes": Array [
-            "image/jpeg",
-            "image/png",
-            "application/pdf",
-          ],
-          "humanName": "Driver's License - Front",
-          "type": "file",
-          "url": "https://upload.staging.onramper.tech/Moonpay/driving_licence/123/ESP/sumAuthToken/front",
+          "nextStep": Object {
+            "acceptedContentTypes": Array [
+              "image/jpeg",
+              "image/png",
+              "application/pdf",
+            ],
+            "humanName": "Driver's License - Front",
+            "type": "file",
+            "url": "https://upload.staging.onramper.tech/Moonpay/driving_licence/123/ESP/sumAuthToken/front",
+          },
+          "title": "Driver's License - Front",
         },
         Object {
-          "acceptedContentTypes": Array [
-            "image/jpeg",
-            "image/png",
-            "application/pdf",
-          ],
-          "humanName": "National Identity Card - Front",
-          "type": "file",
-          "url": "https://upload.staging.onramper.tech/Moonpay/national_identity_card/123/ESP/sumAuthToken/front",
+          "nextStep": Object {
+            "acceptedContentTypes": Array [
+              "image/jpeg",
+              "image/png",
+              "application/pdf",
+            ],
+            "humanName": "National Identity Card - Front",
+            "type": "file",
+            "url": "https://upload.staging.onramper.tech/Moonpay/national_identity_card/123/ESP/sumAuthToken/front",
+          },
+          "title": "National Identity Card - Front",
         },
         Object {
-          "acceptedContentTypes": Array [
-            "image/jpeg",
-            "image/png",
-            "application/pdf",
-          ],
-          "humanName": "Residence Card - Front",
-          "type": "file",
-          "url": "https://upload.staging.onramper.tech/Moonpay/residence_permit/123/ESP/sumAuthToken/front",
+          "nextStep": Object {
+            "acceptedContentTypes": Array [
+              "image/jpeg",
+              "image/png",
+              "application/pdf",
+            ],
+            "humanName": "Residence Card - Front",
+            "type": "file",
+            "url": "https://upload.staging.onramper.tech/Moonpay/residence_permit/123/ESP/sumAuthToken/front",
+          },
+          "title": "Residence Card - Front",
         },
       ],
+      "title": "Choose identity document",
       "type": "pickOne",
     }
   `);
