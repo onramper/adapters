@@ -155,6 +155,7 @@ export default async function (
       });
       return {
         type: "pickOne",
+        title: "Choose identity document",
         options: possibleDocuments.map((docId) => {
           let humanName: string;
           try {
@@ -163,10 +164,13 @@ export default async function (
             throw new InternalError(e);
           }
           return {
-            type: "file",
-            humanName,
-            url: `${baseUploadsUrl}/${identifier}/${docId}/${txId}/${alpha3Country}/${token}/front`,
-            acceptedContentTypes,
+            title: humanName || "",
+            nextStep: {
+              type: "file",
+              humanName,
+              url: `${baseUploadsUrl}/${identifier}/${docId}/${txId}/${alpha3Country}/${token}/front`,
+              acceptedContentTypes,
+            },
           };
         }),
       };

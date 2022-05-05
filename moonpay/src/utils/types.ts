@@ -4,6 +4,13 @@ export type dateInfo = {
   day: number;
 };
 
+export type PickOneOption = {
+  title: string;
+  description?: string;
+  icon?: string;
+  nextStep: nextStep;
+};
+
 export type stepDataItems = Array<
   | {
       type: "select";
@@ -87,7 +94,9 @@ export type nextStep =
   | FileStep
   | {
       type: "pickOne";
-      options: FileStep[];
+      title: string;
+      description?: string;
+      options: PickOneOption[];
     }
   | {
       type: "completed";
