@@ -10,7 +10,10 @@ import {
 import { encodeToken, encodeJson } from "../utils/token";
 import { StepError, InternalError } from "../errors";
 import { nextStep, stepDataItems } from "../utils/types";
-import { requiredDocumentsAlpha3, documentTypeIcons } from "../moonpayCountryData";
+import {
+  requiredDocumentsAlpha3,
+  documentTypeIcons,
+} from "../moonpayCountryData";
 import fetch from "../utils/fetch";
 import getDocumentHumanName from "../documents/getDocumentHumanName";
 import { creationTxType } from "./dynamoTxs";
