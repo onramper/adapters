@@ -74,6 +74,7 @@ export default async function (
   ) {
     return {
       type: "file",
+      eventLabel: "documentBack",
       humanName: `${getDocumentHumanName(documentType)} - Back`,
       url: `${baseUploadsUrl}/${gatewayIdentifier}/${documentType}/${txId}/${alpha3Country}/${token}/back`,
       acceptedContentTypes,

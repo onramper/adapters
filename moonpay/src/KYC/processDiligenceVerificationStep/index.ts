@@ -18,6 +18,7 @@ export async function generateDiligenceVerificationStep(
   return {
     type: "form",
     humanName: "Answer some final questions",
+    eventLabel: "diligenceVerificationForm",
     hint: "To protect your account, we need to ask you some final questions.",
     url: `${baseAPIUrl}/transaction/${identifier}/diligenceVerification/${encodeToken(
       [txId, fiatCurrency, token]
@@ -41,6 +42,7 @@ export async function generateEnhancedDiligenceVerificationStep(
   return {
     type: "form",
     humanName: "Answer some final questions",
+    eventLabel: "proofOfIncomeForm",
     hint: "To protect your account, we need to ask you a few final questions.",
     url: `${baseAPIUrl}/transaction/${identifier}/proofOfIncome/${encodeToken([
       txId,
@@ -108,6 +110,7 @@ export async function processsEnhancedDiligenceVerificationProofOfIncomeStep(
 
   return {
     type: "file",
+    eventLabel: "proofOfIncomeForm",
     humanName: "Proof of income document",
     hint: "You can upload payslips, bank statements, tax returns, etc.",
     url: `${baseUploadsUrl}/${identifier}/proof_of_income/${id}/${alpha3Country}/${csrfToken}`,

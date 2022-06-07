@@ -78,6 +78,7 @@ export default async function (
     } */
     return {
       type: "form",
+      eventLabel: "personalDetailsForm",
       url: `${baseAPIUrl}/transaction/${identifier}/identity/${encodeToken([
         id,
         token,

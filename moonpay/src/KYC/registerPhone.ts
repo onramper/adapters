@@ -31,6 +31,7 @@ export default async function (
   }
   return {
     type: "form",
+    eventLabel: "verifyPhoneForm",
     url: `${baseAPIUrl}/transaction/${identifier}/verifyPhone/${encodeToken([
       id,
       token,
