@@ -103,6 +103,7 @@ test("snapshot normal response", async () => {
           "type": "boolean",
         },
       ],
+      "eventLabel": "verificationForm",
       "type": "form",
       "url": "https://staging.onramper.tech/transaction/Moonpay/verifyEmail/WyIxMjMiLCJ3YXNzdXBAc3VwLmNvbSJd",
     }

@@ -20,6 +20,7 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
   expect(highAmount.type).toBe("pickOne");
   expect(highAmount).toMatchInlineSnapshot(`
     Object {
+      "eventLabel": "documentOption",
       "options": Array [
         Object {
           "description": "Front",
@@ -30,6 +31,7 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
               "image/png",
               "application/pdf",
             ],
+            "eventLabel": "documentFront",
             "humanName": "Passport",
             "type": "file",
             "url": "https://upload.staging.onramper.tech/Moonpay/passport/123/ESP/sumAuthToken/front",
@@ -45,6 +47,7 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
               "image/png",
               "application/pdf",
             ],
+            "eventLabel": "documentFront",
             "humanName": "Driver's License",
             "type": "file",
             "url": "https://upload.staging.onramper.tech/Moonpay/driving_licence/123/ESP/sumAuthToken/front",
@@ -60,6 +63,7 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
               "image/png",
               "application/pdf",
             ],
+            "eventLabel": "documentFront",
             "humanName": "National Identity Card",
             "type": "file",
             "url": "https://upload.staging.onramper.tech/Moonpay/national_identity_card/123/ESP/sumAuthToken/front",
@@ -75,6 +79,7 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
               "image/png",
               "application/pdf",
             ],
+            "eventLabel": "documentFront",
             "humanName": "Residence Card",
             "type": "file",
             "url": "https://upload.staging.onramper.tech/Moonpay/residence_permit/123/ESP/sumAuthToken/front",
@@ -100,6 +105,7 @@ test("requests where amount is slightly higher than 50 EUR lead to document uplo
   expect(lowAmount.type).toBe("iframe");
   expect(lowAmount).toMatchInlineSnapshot(`
     Object {
+      "eventLabel": "paymentMethod",
       "fullscreen": false,
       "type": "iframe",
       "url": "https://moonpay.sandbox.staging.onramper.tech?customerId=undefined&customerAddress=eyJjb3VudHJ5IjoiRVNQIn0=&transactionId=123&apiKey=pk_test_aaaaaa",
