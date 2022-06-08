@@ -90,6 +90,7 @@ export default async function (
       return {
         type: "iframe",
         fullscreen: false,
+        eventLabel: "paymentMethod",
         url: `${baseCreditCardSandboxUrl}?customerId=${
           customerData.id
         }&customerAddress=${encodeJson(
@@ -107,6 +108,7 @@ export default async function (
     }
     return {
       type: "form",
+      eventLabel: "paymentMethod",
       url: `${baseAPIUrl}/transaction/${identifier}/registerBank/${encodeToken([
         txId,
         token,
@@ -139,6 +141,7 @@ export default async function (
       // Get phone
       return {
         type: "form",
+        eventLabel: "phoneNumberVerificationForm",
         url: `${baseAPIUrl}/transaction/${identifier}/registerPhone/${encodeToken(
           [txId, token]
         )}`,
@@ -158,6 +161,7 @@ export default async function (
       });
       return {
         type: "pickOne",
+        eventLabel: "documentOption",
         title: "Choose identity document",
         options: possibleDocuments.map((docId) => {
           let humanName: string;
@@ -172,6 +176,7 @@ export default async function (
             description: "Front",
             nextStep: {
               type: "file",
+              eventLabel: "documentFront",
               humanName,
               url: `${baseUploadsUrl}/${identifier}/${docId}/${txId}/${alpha3Country}/${token}/front`,
               acceptedContentTypes,
@@ -192,6 +197,7 @@ export default async function (
       const alpha3Country = getAlpha3Country(customerData.address.country);
       return {
         type: "file",
+        eventLabel: "documentSelfie",
         humanName: "Selfie",
         url: `${baseUploadsUrl}/${identifier}/selfie/${txId}/${alpha3Country}/${token}/front`,
         acceptedContentTypes,
@@ -209,6 +215,7 @@ export default async function (
       const alpha3Country = getAlpha3Country(customerData.address.country);
       return {
         type: "file",
+        eventLabel: "documentProofOfAddress",
         humanName: "Proof of Address",
         hint:
           "Original, unedited photo or PDF of a bank statement, utility bill, tax return or council tax bill.",

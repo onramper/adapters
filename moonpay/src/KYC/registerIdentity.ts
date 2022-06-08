@@ -58,6 +58,7 @@ export default async function (
     ) {
       return {
         type: "form",
+        eventLabel: "personalDetailsForm",
         url: `${baseAPIUrl}/transaction/${identifier}/identityState/${encodeToken(
           [
             id,

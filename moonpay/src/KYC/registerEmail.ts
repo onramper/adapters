@@ -130,6 +130,7 @@ export default async function (
   }
   return {
     type: "form",
+    eventLabel: "verificationForm",
     url: `${baseAPIUrl}/transaction/${identifier}/verifyEmail/${encodeToken([
       id,
       email,
